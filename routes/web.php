@@ -25,3 +25,10 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout')->middle
 
 
 Route::get('/', [RecipeController::class, 'index'])->name('homePage')->middleware('auth');
+Route::post('/recipes/store', [RecipeController::class, 'store'])->name('recipes_store')->middleware('auth');
+
+Route::get('/destroy/{id}', [RecipeController::class, 'destroy'])->name('recipes_destroy')->middleware('auth');
+Route::get('/edit/{id}', [RecipeController::class, 'editShow'])->name('recipes_edit_show')->middleware('auth');
+Route::post('/edit/{id}', [RecipeController::class, 'edit'])->name('recipes_edit')->middleware('auth');
+
+Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile')->middleware('auth');
