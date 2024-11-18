@@ -17,19 +17,7 @@ class RecipeController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'description' => 'required|string|max:255',
-            'category' => 'required|in:Горячее,Холодное,Десерт',
-            'complexity' => 'required|in:Высокая,Средняя,Низкая',
-            'calorie'=> 'required|integer|min:1',
-            'cooking_time' => 'required|string|max:50',
-            'ingredients' => 'required|string',
-            'steps' => 'required|string',
-        ]);
-
-
+        $validated = $this->validateData($request);
 
         $ingredientsArray = preg_split('/\r\n|\r|\n/', $validated['ingredients']);
         $stepsArray = preg_split('/\r\n|\r|\n/', $validated['steps']);
@@ -58,14 +46,6 @@ class RecipeController extends Controller
         return redirect()->back()->with('success', 'Рецепт успешно записан!');
     }
 
-    public function show($id)
-    {
-        $recipe = Recipe::findOrFail($id);
-
-        // Возврат изображения для отображения
-        return response()->file(storage_path('app/public/' . $recipe->path));
-    }
-
     public function destroy($id) {
         $recipe = Recipe::findOrFail($id);
         $recipe->delete();
@@ -80,12 +60,7 @@ class RecipeController extends Controller
     }
 
     public function edit(Request $request, $id) {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'cooking_time' => 'required|string|max:50',
-            'ingredients' => 'required|string',
-            'steps' => 'required|string',
-        ]);
+        $validated = $this->validateData($request, $isUpdate = true);
 
         // Преобразование ингредиентов и шагов в массивы
         $ingredientsArray = preg_split('/\r\n|\r|\n/', $validated['ingredients']);
@@ -93,22 +68,53 @@ class RecipeController extends Controller
 
         // Обработка данных для сохранения в формате JSON
         $recipeData = [
+            'description' => $validated['description'],
             'cooking_time' => $validated['cooking_time'],
+            'calorie' => $validated['calorie'],
             'ingredients' => array_map(function ($ingredient) {
                 return ['name' => trim($ingredient)];
             }, $ingredientsArray),
             'steps' => array_map('trim', $stepsArray)
         ];
 
+
+
+
         // Поиск рецепта по ID
         $recipe = Recipe::findOrFail($id);
 
         // Обновление полей рецепта
         $recipe->title = $validated['title'];
+        $recipe->category = $validated['category'];
+        $recipe->complexity = $validated['complexity'];
         $recipe->data = $recipeData;
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('images', 'public');
+            $recipe->path = $path;
+        }
+
         $recipe->save();
 
         return redirect()->back()->with('success', 'Рецепт успешно обновлён!');
+    }
+
+    private function validateData(Request $request, $isUpdate = false)
+    {
+        $photoRule = $isUpdate ? 'image|mimes:jpeg,png,jpg|max:2048' : 'required|image|mimes:jpeg,png,jpg|max:2048';
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'photo' => $photoRule,
+            'description' => 'required|string|max:255',
+            'category' => 'required|in:Горячее,Холодное,Десерт',
+            'complexity' => 'required|in:Высокая,Средняя,Низкая',
+            'calorie'=> 'required|integer|min:1',
+            'cooking_time' => 'required|string|max:50',
+            'ingredients' => 'required|string',
+            'steps' => 'required|string',
+        ]);
+
+        return $validated;
     }
 
 }

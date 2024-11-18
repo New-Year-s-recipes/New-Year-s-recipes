@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Auth;?>
         <ul>
             @foreach($recipes as $recipe)
                 <li>
-                    <img src="/photo/{{ $recipe->id }}" alt="Uploaded Photo">
+                    <img src="{{ asset('storage/' . $recipe->path) }}" alt="Uploaded Photo">
                     <h1>Рецепт: {{ $recipe->title }}</h1>
                     <p>Автор: {{ $recipe->user->name }}</p>
-                    <p>Описание: {{ $recipe->data['description'] }}</p>
+                    <p>Описание: {{ $recipe->data['description'] ?? 'Описание отсутствует' }}</p>
                     <p>Сложность: {{ $recipe->complexity }}</p>
-                    <p>Калорийность: {{ $recipe->data['calorie'] }}</p>
+                    <p>Калорийность: {{ $recipe->data['calorie'] ?? 'Калорийность не указана' }}</p>
                     <p>Категория: {{ $recipe->category }}</p>
-                    <p>Время приготовления: {{ $recipe->data['cooking_time'] }}</p>
+                    <p>Время приготовления: {{ $recipe->data['cooking_time'] ?? 'Время приготовления не указана' }}</p>
                     <p>Ингредиенты:</p>
                     <ul>
                         @foreach ($recipe->data['ingredients'] as $ingredient)

@@ -97,8 +97,13 @@ use Illuminate\Support\Facades\Auth;?>
                 <li>
                     <a href="{{ route('recipes_destroy', ['id' => $recipe->id])}} ">Удалить</a>
                     <a href="{{ route('recipes_edit_show', ['id' => $recipe->id])}} ">Изменить</a>
+                    <img src="{{ asset('storage/' . $recipe->path) }}" alt="Uploaded Photo">
                     <h1>Рецепт: {{ $recipe->title }}</h1>
-                    <p>Время приготовления: {{ $recipe->data['cooking_time'] }}</p>
+                    <p>Описание: {{ $recipe->data['description'] ?? 'Описание отсутствует' }}</p>
+                    <p>Сложность: {{ $recipe->complexity }}</p>
+                    <p>Калорийность: {{ $recipe->data['calorie'] ?? 'Калорийность не указана' }}</p>
+                    <p>Категория: {{ $recipe->category }}</p>
+                    <p>Время приготовления:{{ $recipe->data['cooking_time'] ?? 'Время приготовления не указана' }}</p>
                     <p>Ингредиенты:</p>
                     <ul>
                         @foreach ($recipe->data['ingredients'] as $ingredient)
