@@ -19,16 +19,27 @@ class RecipeController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'description' => 'required|string|max:255',
+            'category' => 'required|in:Горячее,Холодное,Десерт',
+            'complexity' => 'required|in:Высокая,Средняя,Низкая',
+            'calorie'=> 'required|integer|min:1',
             'cooking_time' => 'required|string|max:50',
             'ingredients' => 'required|string',
             'steps' => 'required|string',
         ]);
 
+
+
         $ingredientsArray = preg_split('/\r\n|\r|\n/', $validated['ingredients']);
         $stepsArray = preg_split('/\r\n|\r|\n/', $validated['steps']);
+        $path = $request->file('photo')->store('images', 'public');
+
 
         $recipeData = [
+            'description' => $validated['description'],
             'cooking_time' => $validated['cooking_time'],
+            'calorie' => $validated['calorie'],
             'ingredients' => array_map(function ($ingredient) {
                 return ['name' => trim($ingredient)];
             }, $ingredientsArray),
@@ -38,10 +49,21 @@ class RecipeController extends Controller
         $recipe = Recipe::create([
             'user_id' => Auth::id(),
             'title' => $validated['title'],
-            'data' => $recipeData
+            'data' => $recipeData,
+            'category' => $validated['category'],
+            'complexity' => $validated['complexity'],
+            'path' => $path,
         ]);
 
         return redirect()->back()->with('success', 'Рецепт успешно записан!');
+    }
+
+    public function show($id)
+    {
+        $recipe = Recipe::findOrFail($id);
+
+        // Возврат изображения для отображения
+        return response()->file(storage_path('app/public/' . $recipe->path));
     }
 
     public function destroy($id) {

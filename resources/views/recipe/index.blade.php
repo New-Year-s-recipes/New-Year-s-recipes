@@ -9,8 +9,13 @@ use Illuminate\Support\Facades\Auth;?>
         <ul>
             @foreach($recipes as $recipe)
                 <li>
+                    <img src="/photo/{{ $recipe->id }}" alt="Uploaded Photo">
                     <h1>Рецепт: {{ $recipe->title }}</h1>
                     <p>Автор: {{ $recipe->user->name }}</p>
+                    <p>Описание: {{ $recipe->data['description'] }}</p>
+                    <p>Сложность: {{ $recipe->complexity }}</p>
+                    <p>Калорийность: {{ $recipe->data['calorie'] }}</p>
+                    <p>Категория: {{ $recipe->category }}</p>
                     <p>Время приготовления: {{ $recipe->data['cooking_time'] }}</p>
                     <p>Ингредиенты:</p>
                     <ul>
@@ -19,7 +24,7 @@ use Illuminate\Support\Facades\Auth;?>
                         @endforeach
                     </ul>
                     <p>Шаги:</p>
-                    <ol>
+                     <ol>
                         @foreach ($recipe->data['steps'] as $step)
                             <li>{{ $step }}</li>
                         @endforeach

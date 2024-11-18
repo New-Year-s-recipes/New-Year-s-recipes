@@ -32,3 +32,4 @@ Route::get('/edit/{id}', [RecipeController::class, 'editShow'])->name('recipes_e
 Route::post('/edit/{id}', [RecipeController::class, 'edit'])->name('recipes_edit')->middleware('auth');
 
 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/photo/{id}', [RecipeController::class, 'show']);

@@ -12,7 +12,10 @@ class Recipe extends Model
     protected $fillable = [
         'user_id',
         'title',
-        'data'
+        'data',
+        'path',
+        'complexity',
+        'category',
     ];
 
     protected $casts = [
