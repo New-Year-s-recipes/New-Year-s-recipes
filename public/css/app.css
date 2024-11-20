@@ -1,0 +1,36 @@
+/* Добавляем стили для звезд */
+.stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: left;
+}
+
+.stars input {
+    display: none;
+}
+
+.stars label {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* При наведении на звезды, изменяется их цвет */
+.stars label:hover,
+.stars label:hover ~ label
+{
+    color: gold;
+}
+
+/* При выборе, все звезды до выбранной окрашиваются */
+.stars input:checked ~ label,
+.stars input:checked + label {
+    color: gold;
+}
+
+/* Выбор активной звезды */
+.stars input:checked ~ label,
+.stars input:checked + label {
+    color: gold;
+}
