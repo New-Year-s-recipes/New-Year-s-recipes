@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,3 +34,4 @@ Route::post('/edit/{id}', [RecipeController::class, 'edit'])->name('recipes_edit
 
 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 
+Route::post('/ratings', [RatingController::class, 'store'])->name('ratings_store');

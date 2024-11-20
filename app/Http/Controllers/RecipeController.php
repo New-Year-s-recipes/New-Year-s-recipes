@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rating;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +12,15 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all();
+        $userRatings = Rating::where('user_id', Auth::id())->get()->keyBy('recipe_id');
 
-        return view('recipe.index', compact('recipes'));
+        $ratings = Rating::all();
+
+        $averageRatings = $ratings->groupBy('recipe_id')->map(function ($ratings) {
+            return $ratings->avg('rating');
+        });
+
+        return view('recipe.index', compact('recipes', 'userRatings', 'averageRatings'));
     }
 
     public function store(Request $request)
