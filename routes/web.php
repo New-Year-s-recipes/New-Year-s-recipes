@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
@@ -16,22 +17,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/registerPage', [UserController::class, 'registerPage'])->name('registerPage')->middleware('guest');
-Route::post('/register', [UserController::class, 'register'])->name('register')->middleware('guest');
+Route::get('/', [RecipeController::class, 'index'])->name('homePage');
+Route::get('/recipes/more/{id}', [RecipeController::class, 'more'])->name('recipesPage');
 
-Route::get('/login', [UserController::class, 'loginPage'])->name('loginPage')->middleware('guest');
-Route::post('/login', [UserController::class, 'login'])->name('login')->middleware('guest');
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [UserController::class, 'registerPage'])->name('registerPage');
+    Route::post('/register', [UserController::class, 'register'])->name('register');
 
-Route::get('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
+    Route::get('/login', [UserController::class, 'loginPage'])->name('loginPage');
+    Route::post('/login', [UserController::class, 'login'])->name('login');
+});
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile');
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/', [RecipeController::class, 'index'])->name('homePage')->middleware('auth');
-Route::post('/recipes/store', [RecipeController::class, 'store'])->name('recipes_store')->middleware('auth');
+    Route::post('/recipes/store', [RecipeController::class, 'store'])->name('recipes_store');
 
-Route::get('/destroy/{id}', [RecipeController::class, 'destroy'])->name('recipes_destroy')->middleware('auth');
-Route::get('/edit/{id}', [RecipeController::class, 'editShow'])->name('recipes_edit_show')->middleware('auth');
-Route::post('/edit/{id}', [RecipeController::class, 'edit'])->name('recipes_edit')->middleware('auth');
+    Route::get('/destroy/{id}', [RecipeController::class, 'destroy'])->name('recipes_destroy');
+    Route::get('/edit/{id}', [RecipeController::class, 'editShow'])->name('recipes_edit_show');
+    Route::post('/edit/{id}', [RecipeController::class, 'edit'])->name('recipes_edit');
 
-Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile')->middleware('auth');
+    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
+    Route::post('/recipes/{id}/favorite', [FavoriteController::class, 'store'])->name('favorite.add');
+    Route::post('/recipes/{id}/unfavorite', [FavoriteController::class, 'destroy'])->name('favorite.remove');
 
-Route::post('/ratings', [RatingController::class, 'store'])->name('ratings_store');
+    Route::post('/ratings', [RatingController::class, 'store'])->name('ratings_store');
+});

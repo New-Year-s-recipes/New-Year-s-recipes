@@ -11,7 +11,7 @@ class RatingController extends Controller
 {
     public function store(Request $request)
     {
-       $validator = $request->validate([
+        $validator = $request->validate([
             'recipe_id' => 'required|exists:recipes,id',
             'rating' => 'required|integer|min:1|max:5',
         ]);

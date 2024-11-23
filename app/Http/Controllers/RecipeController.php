@@ -12,15 +12,13 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all();
-        $userRatings = Rating::where('user_id', Auth::id())->get()->keyBy('recipe_id');
-
         $ratings = Rating::all();
 
         $averageRatings = $ratings->groupBy('recipe_id')->map(function ($ratings) {
             return $ratings->avg('rating');
         });
 
-        return view('recipe.index', compact('recipes', 'userRatings', 'averageRatings'));
+        return view('recipe.index', compact('recipes', 'averageRatings'));
     }
 
     public function store(Request $request)
@@ -85,9 +83,6 @@ class RecipeController extends Controller
             'steps' => array_map('trim', $stepsArray)
         ];
 
-
-
-
         // Поиск рецепта по ID
         $recipe = Recipe::findOrFail($id);
 
@@ -104,6 +99,21 @@ class RecipeController extends Controller
         $recipe->save();
 
         return redirect()->back()->with('success', 'Рецепт успешно обновлён!');
+    }
+
+    public function more($id)
+    {
+        $recipe = Recipe::findOrFail($id);
+
+        $userRatings = Rating::where('user_id', Auth::id())->where('recipe_id', $recipe->id)->first();
+
+        $ratings = Rating::all();
+
+        $averageRatings = $ratings->groupBy('recipe_id')->map(function ($ratings) {
+            return $ratings->avg('rating');
+        });
+
+        return view('recipe.more', compact('recipe', 'userRatings', 'averageRatings'));
     }
 
     private function validateData(Request $request, $isUpdate = false)
@@ -124,5 +134,4 @@ class RecipeController extends Controller
 
         return $validated;
     }
-
 }

@@ -2,14 +2,13 @@
 use Illuminate\Support\Facades\Auth;?>
 @extends('layouts.app')
 @section('content')
-    @if(Auth::check())
-        <a href="{{route('profile', ['id' => Auth::user()->id])}}">Профиль</a>
-    @endif
+    <a href="{{ route('homePage') }}">Перейти на главную</a>
+    <a href="{{route('profile', ['id' => Auth::user()->id])}}">Профиль</a>
     <div>
         <ul>
             @foreach($recipes as $recipe)
                 <li>
-                    @if(Auth::check() && Auth::user()->favorites->contains($recipe->id))
+                    @if(Auth::user()->favorites->contains($recipe->id))
                         <!-- Удалить из избранного -->
                         <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
                             @csrf
@@ -38,7 +37,7 @@ use Illuminate\Support\Facades\Auth;?>
                         @endforeach
                     </ul>
                     <p>Шаги:</p>
-                     <ol>
+                    <ol>
                         @foreach ($recipe->data['steps'] as $step)
                             <li>{{ $step }}</li>
                         @endforeach
@@ -50,3 +49,4 @@ use Illuminate\Support\Facades\Auth;?>
         </ul>
     </div>
 @endsection
+

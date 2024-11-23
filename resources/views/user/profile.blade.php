@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;?>
 @section('content')
     <a href="{{route('logout')}}">Выйти</a>
     <a href="{{ route('homePage') }}">Перейти на главную</a>
+    <a href="{{ route('favorite') }}">Избранные рецепты</a>
     <div>
         <form action="{{route('recipes_store')}}" method="post" enctype="multipart/form-data">
             @csrf
@@ -99,6 +100,7 @@ use Illuminate\Support\Facades\Auth;?>
                     <a href="{{ route('recipes_edit_show', ['id' => $recipe->id])}} ">Изменить</a>
                     <img src="{{ asset('storage/' . $recipe->path) }}" alt="Uploaded Photo">
                     <h1>Рецепт: {{ $recipe->title }}</h1>
+                    <p>Рейтинг: {{ isset($averageRatings[$recipe->id]) ? $averageRatings[$recipe->id] : 'Нет оценок' }}</p>
                     <p>Описание: {{ $recipe->data['description'] ?? 'Описание отсутствует' }}</p>
                     <p>Сложность: {{ $recipe->complexity }}</p>
                     <p>Калорийность: {{ $recipe->data['calorie'] ?? 'Калорийность не указана' }}</p>

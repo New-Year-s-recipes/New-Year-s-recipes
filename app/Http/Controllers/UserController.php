@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rating;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect('/');
+        return redirect()->intended('/');
     }
 
     public function loginPage()
@@ -46,7 +47,7 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
-            return redirect('/');
+            return redirect()->intended('/');
         }
         return redirect()->back()->with('error', 'Неверный email или пароль');
     }
@@ -60,6 +61,13 @@ class UserController extends Controller
     public function profile() {
         $user = Auth::user();
         $recipes = $user->recipes;
-        return view('user.profile', compact('user', 'recipes'));
+
+        $ratings = Rating::all();
+
+        $averageRatings = $ratings->groupBy('recipe_id')->map(function ($ratings) {
+            return $ratings->avg('rating');
+        });
+
+        return view('user.profile', compact('user', 'recipes', 'averageRatings'));
     }
 }
