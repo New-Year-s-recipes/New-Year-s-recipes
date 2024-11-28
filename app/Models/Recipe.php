@@ -15,7 +15,9 @@ class Recipe extends Model
         'data',
         'path',
         'complexity',
+        'mini_description',
         'category',
+        'status',
     ];
 
     protected $casts = [
@@ -30,5 +32,10 @@ class Recipe extends Model
     public function ratings()
     {
         return $this->hasMany(Rating::class);
+    }
+
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites');
     }
 }

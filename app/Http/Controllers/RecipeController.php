@@ -11,16 +11,20 @@ class RecipeController extends Controller
 {
     public function index()
     {
-        $recipes = Recipe::all();
-        $userRatings = Rating::where('user_id', Auth::id())->get()->keyBy('recipe_id');
-
+        $recipes = Recipe::all()->where('status', 'Одобрен');
         $ratings = Rating::all();
 
         $averageRatings = $ratings->groupBy('recipe_id')->map(function ($ratings) {
             return $ratings->avg('rating');
         });
 
-        return view('recipe.index', compact('recipes', 'userRatings', 'averageRatings'));
+        return view('recipe.index', compact('recipes', 'averageRatings'));
+    }
+
+    public function category($category) {
+        $dishes = Recipe::all()->where('status', 'Одобрен')->where('category', $category);
+
+        return view('recipe.recipesByCategory', compact('dishes', 'category'));
     }
 
     public function store(Request $request)
@@ -45,6 +49,7 @@ class RecipeController extends Controller
         $recipe = Recipe::create([
             'user_id' => Auth::id(),
             'title' => $validated['title'],
+            'mini_description' => $validated['mini_description'],
             'data' => $recipeData,
             'category' => $validated['category'],
             'complexity' => $validated['complexity'],
@@ -68,6 +73,7 @@ class RecipeController extends Controller
     }
 
     public function edit(Request $request, $id) {
+
         $validated = $this->validateData($request, $isUpdate = true);
 
         // Преобразование ингредиентов и шагов в массивы
@@ -85,14 +91,12 @@ class RecipeController extends Controller
             'steps' => array_map('trim', $stepsArray)
         ];
 
-
-
-
         // Поиск рецепта по ID
         $recipe = Recipe::findOrFail($id);
 
         // Обновление полей рецепта
         $recipe->title = $validated['title'];
+        $recipe->mini_description = $validated['mini_description'];
         $recipe->category = $validated['category'];
         $recipe->complexity = $validated['complexity'];
         $recipe->data = $recipeData;
@@ -106,15 +110,31 @@ class RecipeController extends Controller
         return redirect()->back()->with('success', 'Рецепт успешно обновлён!');
     }
 
+    public function more($id)
+    {
+        $recipe = Recipe::findOrFail($id);
+
+        $userRatings = Rating::all()->where('user_id', Auth::id())->where('recipe_id', $recipe->id)->first();
+
+        $ratings = Rating::all();
+
+        $averageRatings = $ratings->groupBy('recipe_id')->map(function ($ratings) {
+            return $ratings->avg('rating');
+        });
+
+        return view('recipe.more', compact('recipe', 'userRatings', 'averageRatings'));
+    }
+
     private function validateData(Request $request, $isUpdate = false)
     {
         $photoRule = $isUpdate ? 'image|mimes:jpeg,png,jpg|max:2048' : 'required|image|mimes:jpeg,png,jpg|max:2048';
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:100',
             'photo' => $photoRule,
-            'description' => 'required|string|max:255',
-            'category' => 'required|in:Горячее,Холодное,Десерт',
+            'description' => 'required|string|max:550',
+            'mini_description' => 'required|string|max:100',
+            'category' => 'required|in:Горячее,Холодное,Десерты',
             'complexity' => 'required|in:Высокая,Средняя,Низкая',
             'calorie'=> 'required|integer|min:1',
             'cooking_time' => 'required|string|max:50',
@@ -124,5 +144,4 @@ class RecipeController extends Controller
 
         return $validated;
     }
-
 }

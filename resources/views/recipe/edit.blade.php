@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <a href="{{ route('profile' ,  ['id' => Auth::user()->id])}}">Профиль</a>
     <form action="{{ route('recipes_edit', ['id' => $recipe->id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="text" name="title" value="{{ $recipe->title }}" required>
@@ -13,6 +12,14 @@
         <label>Описание:</label>
         <input type="text" name="description" value="{{ $recipe->data['description'] ?? 'Описание отсутствует' }}" required>
         @error('description')
+        <div>
+            <p>{{$message}}</p>
+        </div>
+        @enderror
+
+        <label>Мини Описание:</label>
+        <input type="text" name="mini_description" value="{{ $recipe->mini_description }}" required>
+        @error('mini_description')
         <div>
             <p>{{$message}}</p>
         </div>
@@ -56,7 +63,7 @@
         <select name="category">
             <option value="Горячее" @if($recipe->category=="Горячее") selected @endif>Горячее</option>
             <option value="Холодное" @if($recipe->category=="Холодное") selected @endif>Холодное</option>
-            <option value="Десерт" @if($recipe->category=="Десерт") selected @endif>Десерт</option>
+            <option value="Десерты" @if($recipe->category=="Десерты") selected @endif>Десерты</option>
         </select>
         @error('category')
         <div>
