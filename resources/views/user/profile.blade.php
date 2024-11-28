@@ -24,6 +24,14 @@ use Illuminate\Support\Facades\Auth;?>
             </div>
             @enderror
 
+            <label>Небольшой текст для превью:</label>
+            <input type="text" name="mini_description" placeholder="Мини описание (превью)" required>
+            @error('mini_description')
+            <div>
+                <p>{{$message}}</p>
+            </div>
+            @enderror
+
             <label>Время приготовления:</label>
             <input type="time" name="cooking_time" placeholder="Время приготовления" required>
             @error('cooking_time')
@@ -56,7 +64,7 @@ use Illuminate\Support\Facades\Auth;?>
             <select name="category">
                 <option value="Горячее">Горячее</option>
                 <option value="Холодное">Холодное</option>
-                <option value="Десерт">Десерт</option>
+                <option value="Десерты">Десерт</option>
             </select>
             @error('category')
             <div>

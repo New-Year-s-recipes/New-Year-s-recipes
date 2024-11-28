@@ -15,7 +15,9 @@ class Recipe extends Model
         'data',
         'path',
         'complexity',
+        'mini_description',
         'category',
+        'status',
     ];
 
     protected $casts = [

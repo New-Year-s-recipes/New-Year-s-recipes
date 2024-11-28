@@ -1,0 +1,139 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #333;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    padding: 10px 20px;
+    margin: 50px;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #2F4228;
+    font-size: 16px;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.container h1 {
+    text-align: center;
+    margin-bottom: 105px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.line {
+    width: 119px;
+    height: 2px;
+    background-color: #000;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: -105px;
+}
+
+.row {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.col-md-4 {
+    flex: 0 0 22%;
+    box-sizing: border-box;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.card {
+    border: 1px solid #ddd;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    height: 400px;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px;
+    text-align: center;
+    height: calc(100% - 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-body h5 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-body p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.time {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.difficulty {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 14px;
+    margin-top: -17px;
+}
+
+.time img, .difficulty img {
+    margin-right: 5px;
+}
+
+.btn-success {
+    display: block;
+    width: 200px;
+    margin: 30px auto;
+    padding: 10px 20px;
+    background-color: #3B5C41;
+    color: #fff;
+    text-align: center;
+    border-radius: 36.5px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+}

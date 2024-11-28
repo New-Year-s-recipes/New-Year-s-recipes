@@ -2,9 +2,6 @@
 use Illuminate\Support\Facades\Auth;?>
 @extends('layouts.app')
 @section('content')
-    @if(Auth::check())
-        <a href="{{route('profile', ['id' => Auth::user()->id])}}">Профиль</a>
-    @endif
     <div>
         <ul>
             @foreach($recipes as $recipe)

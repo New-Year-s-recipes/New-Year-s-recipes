@@ -2,11 +2,8 @@
 use Illuminate\Support\Facades\Auth;?>
 @extends('layouts.app')
 @section('content')
-    @if(Auth::check())
-        <a href="{{route('profile', ['id' => Auth::user()->id])}}">Профиль</a>
-    @endif
     <div>
-        @if(Auth::check())
+        @if(Auth::check() && Auth::user()->role == 'user')
             @if(Auth::user()->favorites->contains($recipe->id))
                 <!-- Удалить из избранного -->
                 <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
