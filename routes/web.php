@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [RecipeController::class, 'index'])->name('homePage');
 Route::get('/recipes/more/{id}', [RecipeController::class, 'more'])->name('recipesPage');
 Route::get('/recipes/{category}', [RecipeController::class, 'category'])->name('recipesByCategory');
+Route::post('/recipes', [SearchController::class, 'index'])->name('recipes.search');
+Route::get('/recipes', [SearchController::class, 'sorting'])->name('recipes.sorting');
+
+Route::get('/experts-tips', function () {
+    return view('experts-tips');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [UserController::class, 'registerPage'])->name('registerPage');

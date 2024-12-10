@@ -1,3 +1,19 @@
+.error p {
+    color: red;
+}
+
+ol {
+    list-style-type: none;
+    counter-reset: my-counter;
+}
+.steps ol li::before {
+    content: 'Шаг' counter(my-counter) ':';
+    counter-increment: my-counter;
+    color: #056B37;
+    font-weight: 600;
+
+}
+
 /* Добавляем стили для звезд */
 .stars {
     display: flex;
@@ -34,3 +50,243 @@
 .stars input:checked + label {
     color: gold;
 }
+
+
+.filter-container {
+    position: relative;
+    display: inline-block;
+    left: 90%;
+}
+
+.filter-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.filter-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.filter-form {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    border-radius: 8px;
+    width: 300px;
+    display: none;
+    animation: slide-down 0.3s ease-out;
+    z-index: 10;
+}
+
+.filter-form.hidden {
+    display: none;
+}
+
+.filter-form label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.filter-form input,
+.filter-form select {
+    width: 100%;
+}
+
+ input,
+ select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+}
+
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.user-info {
+    text-align: center;
+}
+.user-info div {
+    margin: 20px;
+}
+
+.new-recipes form{
+    margin: 0 auto;
+    width: 900px;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+
+.new-recipes fieldset {
+    border: 1px dashed #218838;
+    border-radius: 13px;
+    background: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 10px;
+}
+
+.new-recipes-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow: hidden;
+    gap: 16px;
+    border-radius: 13px;
+    background: #f8f8f8;
+    border: 3px dashed #218838;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.new-recipes-photo div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow: hidden;
+    gap: 16px;
+}
+.new-recipes-photo p{
+    text-align: center;
+    font-size: 12px;
+}
+.new-recipes-photo span {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 12px;
+    gap: 8px;
+    border-radius: 20px;
+    background: #218838;
+}
+.m-b {
+    margin-bottom: 30px;
+}
+#ingredients-container, #ingredients-container-edit, #steps-container, #steps-container-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+}
+#ingredients-container .ingredient-item, #ingredients-container-edit .ingredient {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 20px;
+    gap: 20px;
+}
+.btn-success.flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    border: 1px dashed #056B37;
+    background: #ffffff;
+    color: #056B37;
+    transition: all ,5s;
+}
+.btn-success.flex:hover {
+    border: 1px solid #056B37;
+    background: #ffffff;
+}
+
+.form-input.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    gap: 10px;
+}
+#steps-container .step-item, #steps-container-edit .step{
+    display: grid;
+    grid-template-columns: 1fr 20px;
+    gap: 20px;
+}
+.remove-ingredient, .remove-step {
+    border: none;
+    background: 0;
+    cursor: pointer;
+}
+
+
+/* Форма */
+.form-container {
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-content {
+    min-width: 600px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 6px 0 rgba(83, 88, 92, 0.2);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.form-container h1 {
+    margin: 0;
+    color: #056B37;
+}
+
+.form-content form {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-input input:active, .form-input input:focus,
+.form-input select:active, .form-input select:focus{
+    outline: 1px solid #056B37;
+}
+
+.form-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    text-align: center;
+}
+/* Форма */
+
+

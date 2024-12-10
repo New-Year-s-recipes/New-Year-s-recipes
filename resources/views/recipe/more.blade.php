@@ -61,7 +61,7 @@ use Illuminate\Support\Facades\Auth;?>
         <p>Ингредиенты:</p>
         <ul>
             @foreach ($recipe->data['ingredients'] as $ingredient)
-                <li>{{ $ingredient['name'] }}</li>
+                <li>{{ $ingredient['name'] }} - {{$ingredient['quantity']}} {{$ingredient['unit']}}</li>
             @endforeach
         </ul>
         <p>Шаги:</p>

@@ -1,0 +1,183 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.recipe-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #ffffff;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.recipe-image {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.description {
+    font-size: 1.1em;
+    color: #000000;
+    line-height: 1.6;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+strong {
+    color: #056B37;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    color: #555;
+    text-align: center;
+}
+
+.detail-item img {
+    width: 34px;
+    height: 41px;
+    margin-right: 10px;
+}
+
+.ingredients-title {
+    font-size: 1.5em;
+    margin-top: 30px;
+    color: #333;
+}
+
+h3 {
+    color: #333;
+}
+
+.ingredients {
+    display: flex;
+    justify-content: space-between;
+    margin: -15px 0;
+}
+
+.column {
+    width: 55%;
+}
+
+.column p {
+    font-size: 16px;
+    color: #000000;
+}
+
+.steps {
+    list-style-type: none;
+    padding: 0;
+}
+ul.steps {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul.steps li {
+    margin-bottom: 20px;
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 8px;
+    color: #333;
+}
+
+ul.steps li strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.line {
+    width: 119px;
+    height: 2px;
+    background-color: #395E3F;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: -20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.rating {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.rating h3 {
+    margin-bottom: 10px;
+    position: relative;
+    left: -410px;
+    margin-top: -45px;
+}
+
+.stars {
+    display: inline-block;
+    width: 120px;
+    height: 20px;
+
+    background-size: 20px;
+}
+
+.rating img {
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+    position: relative;
+    left: -340px;
+    top: -30px;
+}
+
+.author {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.author img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: relative;
+    right: -290px;
+    top: -100px;
+}
+
+.author p {
+    color: #056B37;
+    font-size: 16px;
+    position: relative;
+    right: -390px;
+    top: -150px;
+}
+
+.back-link {
+    text-decoration: none;
+    font-size: 1.1em;
+    color: #395E3F;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

@@ -12,8 +12,8 @@
 </head>
 <body>
 <header>
-    <nav>
-        <ul>
+    <nav class="container">
+        <ul class="nav-list">
             <li><a href="{{route('homePage')}}">Главная</a></li>
             @if(Auth::check())
                 @if(Auth::user()->role == 'user')
@@ -34,7 +34,7 @@
         </ul>
     </nav>
 </header>
-<main>
+<main class="container">
     @yield('content')
 </main>
 

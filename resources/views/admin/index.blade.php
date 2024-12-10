@@ -1,6 +1,13 @@
 @extends('layouts.app')
 @section('content')
     <div class="container mt-4">
+        <div class="user-info">
+            <h2>{{Auth::user()->name}}</h2>
+            <p>{{Auth::user()->email}}</p>
+            <div>
+                <a href="{{route('logout')}}" class="btn-success">Выйти</a>
+            </div>
+        </div>
         <ul>
             <li><a href="{{route('admin')}}">Все</a></li>
             <li><a href="{{route('recipe_status', $status = "На рассмотрении")}}">Новые</a></li>
