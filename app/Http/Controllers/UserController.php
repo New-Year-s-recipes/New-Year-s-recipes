@@ -31,7 +31,7 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('/');
+        return redirect()->intended('/recipes');
     }
 
     public function loginPage()
