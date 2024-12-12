@@ -32,6 +32,7 @@ class FavoriteController extends Controller
             $user->favorites()->attach($recipeId);
         }
 
+        // Для обычного редиректа, если запрос не AJAX
         return redirect()->back()->with('success', 'Рецепт добавлен в избранное.');
     }
 

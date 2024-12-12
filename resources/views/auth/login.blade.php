@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
-<body>
+<body class="container">
+<a href="{{route('homePage')}}" style="top: 20px" class="back-link">⟵ вернуться назад</a>
 <div class="form-container">
     <div class="form-content">
         <h1>Вход</h1>

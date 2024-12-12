@@ -15,32 +15,53 @@ class RecipeController extends Controller
     public function index(Request $request)
     {
         $recipes = Recipe::withCount(['favorites' => function ($query) {
-            $query->where('created_at', '>=', Carbon::now()->subDays(30)) // Последние 30 дней
-            ->where('status', 'Одобрен'); // Статус "Одобрен"
+            $query->where('created_at', '>=', Carbon::now()->subDays(30)) // Только за последние 30 дней
+            ->where('status', 'Одобрен'); // Только с статусом "Одобрен"
         }])
-            ->orderBy('views', 'desc') // Первичная сортировка (по просмотрам)
-            ->take(100) // Ограничьте выборку для оптимизации
+            ->whereHas('favorites', function ($query) {
+                $query->where('status', 'Одобрен'); // Учитываем только одобренные рецепты
+            })
+            ->orderByDesc('views') // Сортировка по просмотрам
+            ->take(10) // Ограничиваем выборку до 10
             ->get();
 
+        //Если нет фаворитов
+        if ($recipes->isEmpty()) {
+            $recipes = Recipe::where('status', 'Одобрен') // Только одобренные
+            ->orderByDesc('views')
+            ->take(10)
+            ->get();
+        }
+
+        // расчёт популярности
         $popularRecipes = $recipes->map(function ($recipe) {
-            $recipe->popularity_score = $recipe->views + ($recipe->favorites_count * 10);
+            $recipe->popularity_score = $recipe->views + ($recipe->favorites_count * 10); // Индекс популярности
             return $recipe;
         })->sortByDesc('popularity_score')->take(10);
 
+        // Фильтры по категориям
+        $hots = $popularRecipes->filter(function ($recipe) {
+            return $recipe->category === 'Горячее';
+        });
 
-        $hots = Recipe::where('category', 'Горячее')->get();
-        $deserts = Recipe::where('category', 'Десерты')->get();
-        $colds = Recipe::where('category', 'Холодное')->get();
+        $deserts = $popularRecipes->filter(function ($recipe) {
+            return $recipe->category === 'Десерты';
+        });
+
+        $colds = $popularRecipes->filter(function ($recipe) {
+            return $recipe->category === 'Холодное';
+        });
+
+
         $ratings = Rating::all();
 
         $averageRatings = $ratings->groupBy('recipe_id')->map(function ($ratings) {
             return $ratings->avg('rating');
         });
 
-        $adviceOfTheDay = Cache::remember('advice_of_the_day', now()->endOfDay(), function () {
-            return Tip::inRandomOrder()->first();
+        $adviceOfTheDay = Cache::remember('advice_of_the_day', Carbon::now()->addDay(), function () {
+            return Tip::with('user')->inRandomOrder()->first();
         });
-
 
         return view('recipe.index', compact('popularRecipes', 'hots', 'deserts', 'colds', 'averageRatings', 'request', 'adviceOfTheDay'));
     }
@@ -72,9 +93,11 @@ class RecipeController extends Controller
 
         $stepsArray = $validated['steps'];
 
+        $cookingTime = $validated['cooking_hours'] . ':' . str_pad($validated['cooking_minutes'], 2, '0', STR_PAD_LEFT);
+
         $recipeData = [
             'description' => $validated['description'],
-            'cooking_time' => $validated['cooking_time'],
+            'cooking_time' => $cookingTime,
             'calorie' => $validated['calorie'],
             'ingredients' => $ingredientsArray,
             'steps' => $stepsArray,
@@ -123,10 +146,13 @@ class RecipeController extends Controller
         // Обработка шагов
         $stepsArray = array_map('trim', $validated['steps']);
 
+        $cookingHours = $validated['cooking_hours'];
+        $cookingMinutes = $validated['cooking_minutes'];
+
         // Подготовка данных для хранения в формате JSON
         $recipeData = [
             'description' => $validated['description'],
-            'cooking_time' => $validated['cooking_time'],
+            'cooking_time' => $cookingHours . ':' . str_pad($cookingMinutes, 2, '0', STR_PAD_LEFT),
             'calorie' => $validated['calorie'],
             'ingredients' => $ingredientsArray,
             'steps' => $stepsArray,
@@ -150,7 +176,7 @@ class RecipeController extends Controller
 
         $recipe->save();
 
-        return redirect(route('homePage'))->with('success', 'Рецепт успешно обновлён!');
+        return redirect()->back()->with('success', 'Рецепт успешно обновлён!');
     }
 
 
@@ -182,7 +208,9 @@ class RecipeController extends Controller
             'category' => 'required|in:Горячее,Холодное,Десерты',
             'complexity' => 'required|in:Высокая,Средняя,Низкая',
             'calorie' => 'required|integer|min:1',
-            'cooking_time' => 'required|string',
+
+            'cooking_hours' => 'required|integer|min:0|max:24',
+            'cooking_minutes' => 'required|integer|min:0|max:59',
 
             'ingredients' => 'required|array|min:1',
             'ingredients.*' => 'required|string',
