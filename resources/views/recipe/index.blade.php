@@ -58,7 +58,7 @@ use Illuminate\Support\Facades\Auth;?>
                 </div>
 
                 <ul class="dishes-slider">
-                    @foreach($recipes as $recipe)
+                    @foreach($popularRecipes as $recipe)
                         <li>
                             <a href="{{route('recipesPage', $recipe->id)}}">
                                 <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
@@ -180,6 +180,7 @@ use Illuminate\Support\Facades\Auth;?>
             </div>
         </section>
 
+        @if(isset($adviceOfTheDay))
         <section class="advice">
             <div class="container advice-container">
                 <div class="advise-wrapper">
@@ -203,6 +204,7 @@ use Illuminate\Support\Facades\Auth;?>
                 </div>
             </div>
         </section>
+        @endif
     </div>
 @endsection
 @section('scripts')

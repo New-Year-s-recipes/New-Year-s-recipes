@@ -23,8 +23,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [RecipeController::class, 'index'])->name('homePage');
 Route::get('/recipes/more/{id}', [RecipeController::class, 'more'])->name('recipesPage');
 Route::get('/recipes/{category}', [RecipeController::class, 'category'])->name('recipesByCategory');
-Route::post('/recipes', [SearchController::class, 'index'])->name('recipes.search');
-Route::get('/recipes', [SearchController::class, 'sorting'])->name('recipes.sorting');
+/*Route::post('/recipes', [SearchController::class, 'index'])->name('recipes.search');
+Route::get('/recipes', [SearchController::class, 'sorting'])->name('recipes.sorting');*/
 Route::get('/tips', [TipController::class, 'index'])->name('tips.index');
 Route::get('/tips/more/{id}', [TipController::class, 'more'])->name('tipsPage');
 
@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('user')->group(function () {
         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile');
+        Route::get('/profile/edit/{id}', [UserController::class, 'editProfile'])->name('profile_edit');
+        Route::post('/profile/edit', [UserController::class, 'updateProfile'])->name('profile_update');
 
         Route::get('/recipes/add/new-recipe', [RecipeController::class, 'addRecipeShow'])->name('recipes.add');
         Route::post('/recipes/store', [RecipeController::class, 'store'])->name('recipes_store');
