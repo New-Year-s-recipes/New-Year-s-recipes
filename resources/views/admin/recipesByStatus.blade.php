@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container mt-4">
+    <div class="container mt-4 m-t" >
         <ul>
-            <li><a href="{{route('admin')}}">Все</a></li>
+            <li><a href="{{route('recipe_status', $status = "all")}}">Все</a></li>
             <li><a href="{{route('recipe_status', $status = "На рассмотрении")}}">Новые</a></li>
             <li><a href="{{route('recipe_status', $status = "Одобрен")}}">Одобрено</a></li>
             <li><a href="{{route('recipe_status', $status = "Отклонен")}}">Отклонен</a></li>

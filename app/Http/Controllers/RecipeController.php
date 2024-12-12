@@ -4,27 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Models\Rating;
 use App\Models\Recipe;
+use App\Models\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class RecipeController extends Controller
 {
     public function index(Request $request)
     {
         $recipes = Recipe::all()->where('status', 'Одобрен');
+        $hots = Recipe::where('category', 'Горячее')->get();
+        $deserts = Recipe::where('category', 'Десерты')->get();
+        $colds = Recipe::where('category', 'Холодное')->get();
         $ratings = Rating::all();
 
         $averageRatings = $ratings->groupBy('recipe_id')->map(function ($ratings) {
             return $ratings->avg('rating');
         });
 
-        return view('recipe.index', compact('recipes', 'averageRatings', 'request'));
+        $adviceOfTheDay = Cache::remember('advice_of_the_day', now()->endOfDay(), function () {
+            return Tip::inRandomOrder()->first();
+        });
+
+
+        return view('recipe.index', compact('recipes', 'hots', 'deserts', 'colds', 'averageRatings', 'request', 'adviceOfTheDay'));
     }
 
     public function category($category) {
         $dishes = Recipe::all()->where('status', 'Одобрен')->where('category', $category);
 
         return view('recipe.recipesByCategory', compact('dishes', 'category'));
+    }
+
+    public function addRecipeShow()
+    {
+        return view('recipe.add');
     }
 
     public function store(Request $request)
@@ -50,8 +65,6 @@ class RecipeController extends Controller
             'ingredients' => $ingredientsArray,
             'steps' => $stepsArray,
         ];
-
-
 
         $recipe = Recipe::create([
             'user_id' => Auth::id(),
@@ -123,7 +136,7 @@ class RecipeController extends Controller
 
         $recipe->save();
 
-        return redirect()->back()->with('success', 'Рецепт успешно обновлён!');
+        return redirect(route('homePage'))->with('success', 'Рецепт успешно обновлён!');
     }
 
 
@@ -158,7 +171,7 @@ class RecipeController extends Controller
             'cooking_time' => 'required|string',
 
             'ingredients' => 'required|array|min:1',
-            'ingredients.*' => 'required|string|max:100',
+            'ingredients.*' => 'required|string',
 
             'ingredient_quantity' => 'required|array|min:1',
             'ingredient_quantity.*' => 'required|integer|min:1',

@@ -7,16 +7,13 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index(){
-        $recipes = Recipe::all();
+    public function index($status){
+        if ($status == 'all') {
+            $recipes = Recipe::all();
+        }
+        else $recipes = Recipe::all()->where('status', $status);
 
         return view('admin.index', compact('recipes'));
-    }
-
-    public function status($status) {
-        $recipes = Recipe::all()->where('status', $status);
-
-        return view('admin.recipesByStatus', compact('recipes'));
     }
 
     public function statusApproved($id) {
