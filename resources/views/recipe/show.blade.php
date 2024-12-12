@@ -1,12 +1,22 @@
-@extends('layouts.app')
-
-@section('content')
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ $recipe->title }}</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+</head>
+<body>
     <div class="container show m-t">
+        <button onclick="goBack()" class="back-link">⟵ вернуться назад</button>
         <div class="line-div">
             <h1 class="recipe-title">{{ $recipe->title }}</h1>
             <div class="line"></div>
         </div>
-        @if(Auth::check() && Auth::user()->role == 'user')
+        @if(Auth::check() && (Auth::user()->role == 'user' || Auth::user()->role == 'expert'))
             @if(Auth::user()->favorites->contains($recipe->id))
                 <!-- Удалить из избранного -->
                 <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
@@ -31,7 +41,16 @@
                 <img src="{{ asset('images/time.svg') }}" alt="Время готовки">
                 <div>
                     <p>Время готовки:</p>
-                    <span>{{ $recipe->data['cooking_time'] ?? 'Время приготовления не указана' }}</span>
+                    @php
+                        $cookingHours = $recipe->data['cooking_time'] ? explode(':', $recipe->data['cooking_time'])[0] : 0;
+                        $cookingMinutes = $recipe->data['cooking_time'] ? explode(':', $recipe->data['cooking_time'])[1] : 0;
+                    @endphp
+
+                    @if($cookingHours > 0)
+                        <span>{{ $cookingHours }} часов {{ $cookingMinutes }} минут</span>
+                    @else
+                        <span>{{ $cookingMinutes }} минут</span>
+                    @endif
                 </div>
             </div>
             <div class="info-block">
@@ -130,4 +149,6 @@
             </div>
         </div>
     </div>
-@endsection
+    <script src="{{ asset('js/go-back.js') }}"></script>
+</body>
+</html>

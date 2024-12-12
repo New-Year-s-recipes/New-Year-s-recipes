@@ -1,3 +1,4 @@
+
 body {
     overflow-x: hidden;
     font-family: "Montserrat", sans-serif;
@@ -29,9 +30,10 @@ nav ul div, .profile{
 }
 
 nav ul li a {
+    font-family: "Montserrat-Regular", sans-serif;
     text-decoration: none;
     color: #2F4228;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 nav ul li a:hover {
@@ -44,10 +46,24 @@ nav ul li a:hover {
     margin: 0 auto;
 }
 
+@media (max-width: 900px) {
+    .container {
+        padding: 0 50px;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        padding: 0 20px;
+    }
+}
+
 .container h1 {
+    font-family: 'Montserrat-Medium', sans-serif;
     text-align: center;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: bold;
+    margin: 10px;
 }
 
 .container h2 {
@@ -66,8 +82,24 @@ nav ul li a:hover {
     background-color: #000;
     position: absolute;
     left: 50%;
-    bottom: -10px;
     transform: translateX(-50%);
+}
+
+
+.back-link {
+    text-decoration: none;
+    font-size: 1.1em;
+    color: #395E3F;
+    margin-bottom: 20px;
+    background:none;
+    border: none;
+    display: inline-block;
+    position: absolute;
+    z-index: 5;
+}
+
+.back-link:hover {
+    text-decoration: underline;
 }
 
 .row {
@@ -76,6 +108,22 @@ nav ul li a:hover {
     gap: 40px;
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
+
+@media (max-width: 1200px) {
+    .row {
+        margin-top: 80px;
+        gap: 20px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 920px) {
+    .row {
+        margin-top: 50px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 .my-recipe, .admin-recipe-card {
     position: relative;
 }
@@ -132,13 +180,15 @@ nav ul li a:hover {
 }
 
 .card-body h5 {
-    font-size: 18px;
+    font-family: 'Montserrat-Medium', sans-serif;
+    font-size: 20px;
     font-weight: bold;
     color: #333;
 }
 
 .card-body p {
-    font-size: 14px;
+    font-family: 'Montserrat-Light', sans-serif;
+    font-size: 20px;
     color: #666;
 }
 
@@ -209,13 +259,10 @@ nav ul li a:hover {
     object-fit: cover;
 }
 
-
-.back-link {
-    text-decoration: none;
-    color: #056B37;
-    font-size: 14px;
-    margin-bottom: 20px;
-    display: inline-block;
+@media (max-width: 900px) {
+    .container.show {
+        gap: 20px;
+    }
 }
 
 .recipe-image {
@@ -223,6 +270,7 @@ nav ul li a:hover {
 }
 
 .recipe-description {
+    font-family: 'Montserrat-Medium', sans-serif;
     font-size: 24px;
     margin-top: 20px;
     color: #000000;
@@ -231,10 +279,12 @@ nav ul li a:hover {
 .recipe-info {
     display: flex;
     gap: 20px;
-    justify-content: space-around;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 h2.recipe-info-h2 {
+    font-family: 'Montserrat-Bold', sans-serif;
     font-weight: bold;
     font-size: 32px;
     text-align: left;
@@ -258,12 +308,14 @@ h2.recipe-info-h2 {
     width: 40px;
     height: 40px;
 }
+
 .recipe-info-cook {
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 .recipe-info-cook h3{
+    font-family: 'Montserrat-SemiBold', sans-serif;
     font-size: 24px;
     font-weight: 600;
 }
@@ -273,6 +325,27 @@ h2.recipe-info-h2 {
     gap: 10px;
     margin-top: 20px;
     font-size: 20px;
+}
+
+@media (max-width: 900px) {
+    .recipe-info img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .info-block {
+        font-size: 16px;
+    }
+
+    .recipe-info-cook h3{
+        font-size: 18px;
+    }
+    .ingredients ul, .steps ol {
+        font-size: 16px;
+    }
+    h2.recipe-info-h2 {
+        font-size: 24px;
+    }
 }
 
 .recipe-add-info {
@@ -287,9 +360,11 @@ h2.recipe-info-h2 {
     color: #056B37;
 }
 .author h4 {
+    font-family: 'Montserrat-Medium', sans-serif;
     font-size: 16px;
 }
 .author p {
+    font-family: 'Montserrat-Regular', sans-serif;
     font-size: 14px;
 }
 .author img {
@@ -337,6 +412,7 @@ header {
 }
 
 .header h1 {
+    font-family: 'Montserrat-ExtraBold', sans-serif;
     color: #FF0000;
     font-size: 55px !important;
     text-align: start !important;
@@ -345,6 +421,7 @@ header {
 
 .header p {
     font-size: 18px;
+    font-family: 'Montserrat-Regular', sans-serif;
 }
 
 .header-content {
@@ -392,6 +469,7 @@ header {
 .image-wrapper__dishes span {
     color: #fff;
     font-size: 24px;
+    font-family: 'Montserrat-Regular', sans-serif;
 }
 
 .lights {
@@ -413,6 +491,7 @@ header {
 }
 
 .popular-wrapper h2 {
+    font-family: 'Montserrat-Regular', sans-serif;
     text-align: center;
     margin-bottom: 50px;
 }
@@ -443,6 +522,7 @@ header {
 }
 
 .advice h2 {
+    font-family: 'Montserrat-Regular', sans-serif;
     font-size: 32px;
     text-align: center;
     margin-bottom: 40px;
@@ -476,6 +556,7 @@ header {
 }
 
 .text__advice h5 {
+    font-family: 'Montserrat-ExtraBold', sans-serif;
     font-size: 24px;
     margin-bottom: 12px;
 }
@@ -490,17 +571,25 @@ header {
     gap: 30px;
 }
 
+.advice-img {
+    width: 400px;
+    object-fit: cover;
+}
+
 .name {
+    font-family: 'Inter_18pt-Bold', sans-serif;
     color: #000000;
     font-size: 15px;
 }
 
 .author-class {
+    font-family: 'Inter_18pt-Light', sans-serif;
     color: #000000;
     font-size: 12px;
 }
 
 .item__category {
+    font-family: 'Inter_18pt-Bold', sans-serif;
     cursor: pointer;
     color: #ffffff;
     min-width: 152px;
@@ -556,4 +645,50 @@ header {
 .item-info__dishes_slider span {
     color: #F01227;
     font-size: 11px;
+}
+
+
+
+@font-face {
+    font-family: "Montserrat-Regular";
+    src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Montserrat-SemiBold";
+    src: url("../fonts/Montserrat-SemiBold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Montserrat-Medium";
+    src: url("../fonts/Montserrat-Medium.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Montserrat-Light";
+    src: url("../fonts/Montserrat-Light.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Montserrat-ExtraBold";
+    src: url("../fonts/Montserrat-ExtraBold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Inter_18pt-Bold";
+    src: url("../fonts/Inter_18pt-Bold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Inter_18pt-Light";
+    src: url("../fonts/Inter_18pt-Light.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
 }

@@ -13,6 +13,7 @@ body {
 }
 
 .container h1 {
+    font-family: 'Montserrat-Medium', sans-serif;
     font-size: 32px;
     color: #000000;
     text-align: center;
@@ -58,12 +59,14 @@ body {
 
 
 .tip-card h2 {
+    font-family: 'Montserrat-Medium', sans-serif;
     font-weight: lighter;
     font-size: 23px;
     color: #000000;
 }
 
 .tip-card p {
+    font-family: 'Montserrat-Light', sans-serif;
     font-weight: lighter;
     font-size: 1rem;
     color: #7f8c8d;
@@ -109,9 +112,24 @@ body {
     font-size: 1.1em;
     color: #395E3F;
     margin-bottom: 20px;
+    background:none;
+    border: none;
     display: inline-block;
 }
 
 .back-link:hover {
     text-decoration: underline;
+}
+
+@font-face {
+    font-family: "Montserrat-Medium";
+    src: url("../fonts/Montserrat-Medium.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Montserrat-Light";
+    src: url("../fonts/Montserrat-Light.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
 }

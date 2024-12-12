@@ -52,5 +52,6 @@
 
 </footer>
 @yield('scripts')
+<script src="{{ asset('js/go-back.js') }}"></script>
 </body>
 </html>

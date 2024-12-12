@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <a href="#" class="back-link">⟵ вернуться назад</a>
+    <button onclick="goBack()" class="back-link">⟵ вернуться назад</button>
     <h1>Советы экспертов</h1>
     <div class="line"></div>
     <div class="arrow"></div>
@@ -24,5 +24,6 @@
         @endforeach
     </div>
 </div>
+<script src="{{ asset('js/go-back.js') }}"></script>
 </body>
 </html>

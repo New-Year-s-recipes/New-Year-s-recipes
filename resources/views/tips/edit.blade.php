@@ -1,7 +1,17 @@
-@extends('layouts.app')
-@section('content')
-
-    <div class="new-recipes m-t">
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Добавление совета</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+</head>
+<body class="container" style="padding-top: 20px">
+<a href="{{route('myTip')}}" class="back-link">⟵ вернуться назад</a>
+<div class="new-recipes" style="padding-top: 50px">
         <form action="{{ route('tips_edit', ['id' => $tip->id]) }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="new-recipes-photo">
@@ -115,4 +125,5 @@
         });
 
     </script>
-@endsection
+</body>
+</html>

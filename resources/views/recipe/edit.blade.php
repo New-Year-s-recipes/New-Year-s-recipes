@@ -1,7 +1,18 @@
-@extends('layouts.app')
-@section('content')
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Редактирование рецепта</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+</head>
+<body class="container" style="padding-top: 20px">
+<a href="{{route('profile', ['id' => Auth::user()->id])}}" class="back-link">⟵ вернуться назад</a>
 
-    <div class="new-recipes m-t">
+<div class="new-recipes" style="padding-top: 50px">
         <form action="{{ route('recipes_edit', ['id' => $recipe->id]) }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="new-recipes-photo">
@@ -36,10 +47,17 @@
             </fieldset>
 
             <fieldset class="form-input grid">
-                <div class="grid">
+                <div class="grid time">
                     <label>Время готовки:</label>
-                    <input type="time" name="cooking_time" value="{{ $recipe->data['cooking_time'] }}" required>
-                    @error('cooking_time')
+                    <!-- Поле для ввода часов -->
+                    <input type="number" name="cooking_hours" min="0" value="{{ old('cooking_hours', explode(':', $recipe->data['cooking_time'])[0]) }}" placeholder="Часы" required>
+                    :
+                    <!-- Поле для ввода минут -->
+                    <input type="number" name="cooking_minutes" min="0" max="59" value="{{ old('cooking_minutes', explode(':', $recipe->data['cooking_time'])[1]) }}" placeholder="Минуты" required>
+                    @error('cooking_hours')
+                    <div><p>{{ $message }}</p></div>
+                    @enderror
+                    @error('cooking_minutes')
                     <div><p>{{ $message }}</p></div>
                     @enderror
                 </div>
@@ -209,4 +227,5 @@
         });
 
     </script>
-@endsection
+</body>
+</html>

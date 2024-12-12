@@ -67,7 +67,7 @@ use Illuminate\Support\Facades\Auth;?>
                                         <span>РЕЦЕПТ</span>
                                         <p>{{ $recipe->title}}</p>
                                     </div>
-                                    @if(Auth::check() && Auth::user()->role == 'user')
+                                    @if(Auth::check() && (Auth::user()->role == 'user' || Auth::user()->role == 'expert'))
                                         @if(Auth::user()->favorites->contains($recipe->id))
                                             <!-- Удалить из избранного -->
                                             <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
@@ -97,7 +97,7 @@ use Illuminate\Support\Facades\Auth;?>
                                         <span>РЕЦЕПТ</span>
                                         <p>{{ $recipe->title}}</p>
                                     </div>
-                                    @if(Auth::check() && Auth::user()->role == 'user')
+                                    @if(Auth::check() && (Auth::user()->role == 'user' || Auth::user()->role == 'expert'))
                                         @if(Auth::user()->favorites->contains($recipe->id))
                                             <!-- Удалить из избранного -->
                                             <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
@@ -127,7 +127,7 @@ use Illuminate\Support\Facades\Auth;?>
                                         <span>РЕЦЕПТ</span>
                                         <p>{{ $recipe->title}}</p>
                                     </div>
-                                    @if(Auth::check() && Auth::user()->role == 'user')
+                                    @if(Auth::check() && (Auth::user()->role == 'user' || Auth::user()->role == 'expert'))
                                         @if(Auth::user()->favorites->contains($recipe->id))
                                             <!-- Удалить из избранного -->
                                             <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
@@ -157,7 +157,7 @@ use Illuminate\Support\Facades\Auth;?>
                                         <span>РЕЦЕПТ</span>
                                         <p>{{ $recipe->title}}</p>
                                     </div>
-                                    @if(Auth::check() && Auth::user()->role == 'user')
+                                    @if(Auth::check() && (Auth::user()->role == 'user' || Auth::user()->role == 'expert'))
                                         @if(Auth::user()->favorites->contains($recipe->id))
                                             <!-- Удалить из избранного -->
                                             <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
@@ -191,7 +191,7 @@ use Illuminate\Support\Facades\Auth;?>
                             <p>{{$adviceOfTheDay->text}}</p>
                         </div>
                         <div class="image-wrapper__advice">
-                            <img src=" {{ asset('storage/' . $adviceOfTheDay->image_path) }}" alt="advice-image">
+                            <img class="advice-img" src=" {{ asset('storage/' . $adviceOfTheDay->image_path) }}" alt="advice-image">
                             <div class="author">
                                 <img src="{{  asset('storage/' . $adviceOfTheDay->user->path) }}" alt="author">
                                 <div class="author__content">

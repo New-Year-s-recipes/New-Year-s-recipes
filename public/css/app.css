@@ -143,6 +143,7 @@ ol {
 .user-action {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
     text-align: center;
     align-items: center;
     justify-content: center;
@@ -155,10 +156,16 @@ ol {
 
 .new-recipes form{
     margin: 0 auto 20px;
-    width: 900px;
+    max-width: 900px;
     display: flex;
     gap: 20px;
     flex-direction: column;
+}
+
+@media (max-width: 900px) {
+    .new-recipes form{
+        margin: 20px;
+    }
 }
 
 .new-recipes fieldset {
@@ -226,6 +233,8 @@ ol {
     grid-template-columns: 3fr 1fr 1fr 20px;
     gap: 20px;
 }
+
+
 .btn-success.flex {
     display: flex;
     flex-direction: row;
@@ -253,6 +262,18 @@ ol {
     align-items: center;
     gap: 10px;
 }
+
+.grid.time {
+    grid-template-columns: 1fr 1fr 5px 1fr;
+}
+
+@media (max-width: 900px) {
+    .form-input.grid {
+        grid-template-columns: 1fr;
+        column-gap: 20px;
+    }
+}
+
 #steps-container .step-item, #steps-container-edit .step{
     display: grid;
     grid-template-columns: 1fr 20px;
