@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Auth;?>
                 <h2>{{Auth::user()->name}}</h2>
                 <p>{{Auth::user()->email}}</p>
             </div>
-            <a class="btn btn-logout" href="{{route('logout')}}" >Выйти</a>
+            <div class="flex">
+                <a class="btn btn-error" href="{{route('logout')}}" >Выйти</a>
+                <a class="btn btn-success" href="{{route('profile_edit', $id = Auth::user()->id)}}" >Изменить</a>
+            </div>
+
         </div>
         <div class="user-action">
             <a class="btn-success" href="{{ route('recipes.add') }}">Добавить рецепт</a>

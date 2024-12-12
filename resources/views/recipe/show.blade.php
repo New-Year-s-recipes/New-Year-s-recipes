@@ -79,7 +79,7 @@
         </div>
 
         <div class="recipe-add-info">
-            @if(Auth::check() && Auth::user()->role == 'user')
+            @if(Auth::check() && (Auth::user()->role == 'user' ||Auth::user()->role == 'expert' ))
                 <div class="rating">
                     <h3>Оценить:</h3>
                     <form method="POST" action="{{ route('ratings_store') }}">
@@ -122,7 +122,7 @@
                 </div>
             @endif
             <div class="author">
-                <img src="{{ asset($recipe->image_author) }}" alt="Автор">
+                <img src="{{ asset('storage/' . $recipe->user->path) }}" alt="Автор">
                 <div>
                     <h4>{{ $recipe->user->name }}</h4>
                     <p>Автор</p>

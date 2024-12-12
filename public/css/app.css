@@ -121,6 +121,7 @@ ol {
     display: flex;
     flex-direction: row;
     gap: 20px;
+    align-items: center;
 }
 
 .user-info {
@@ -139,9 +140,6 @@ ol {
     border-radius: 50%;
 }
 
-.btn-logout {
-    color: red;
-}
 .user-action {
     display: flex;
     gap: 20px;
@@ -299,7 +297,7 @@ ol {
     flex-direction: column;
 }
 
-.form-input {
+.form-input, .confirm {
     display: flex;
     flex-direction: column;
     gap: 10px;

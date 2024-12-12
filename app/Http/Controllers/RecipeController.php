@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rating;
 use App\Models\Recipe;
 use App\Models\Tip;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -13,7 +14,20 @@ class RecipeController extends Controller
 {
     public function index(Request $request)
     {
-        $recipes = Recipe::all()->where('status', 'Одобрен');
+        $recipes = Recipe::withCount(['favorites' => function ($query) {
+            $query->where('created_at', '>=', Carbon::now()->subDays(30)) // Последние 30 дней
+            ->where('status', 'Одобрен'); // Статус "Одобрен"
+        }])
+            ->orderBy('views', 'desc') // Первичная сортировка (по просмотрам)
+            ->take(100) // Ограничьте выборку для оптимизации
+            ->get();
+
+        $popularRecipes = $recipes->map(function ($recipe) {
+            $recipe->popularity_score = $recipe->views + ($recipe->favorites_count * 10);
+            return $recipe;
+        })->sortByDesc('popularity_score')->take(10);
+
+
         $hots = Recipe::where('category', 'Горячее')->get();
         $deserts = Recipe::where('category', 'Десерты')->get();
         $colds = Recipe::where('category', 'Холодное')->get();
@@ -28,7 +42,7 @@ class RecipeController extends Controller
         });
 
 
-        return view('recipe.index', compact('recipes', 'hots', 'deserts', 'colds', 'averageRatings', 'request', 'adviceOfTheDay'));
+        return view('recipe.index', compact('popularRecipes', 'hots', 'deserts', 'colds', 'averageRatings', 'request', 'adviceOfTheDay'));
     }
 
     public function category($category) {
@@ -144,7 +158,7 @@ class RecipeController extends Controller
     public function more($id)
     {
         $recipe = Recipe::findOrFail($id);
-
+        $recipe->increment('views'); // Увеличивает поле `views` на 1
         $userRatings = Rating::all()->where('user_id', Auth::id())->where('recipe_id', $recipe->id)->first();
 
         $ratings = Rating::all();

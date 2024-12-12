@@ -9,7 +9,7 @@
             <p>{{ $tip->text }}</p>
         </div>
         <div class="author">
-            <img src="{{ asset($tip->image_author) }}" alt="Автор">
+            <img src="{{ asset('storage/' . $tip->user->path) }}" alt="Автор">
             <div>
                 <h4>{{ $tip->user->name }}</h4>
                 <p>Автор</p>
