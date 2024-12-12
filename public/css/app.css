@@ -7,11 +7,11 @@ ol {
     counter-reset: my-counter;
 }
 .steps ol li::before {
-    content: 'Шаг' counter(my-counter) ':';
+    content: 'Шаг' counter(my-counter) ': ';
     counter-increment: my-counter;
     color: #056B37;
     font-weight: 600;
-
+    font-size: 24px;
 }
 
 /* Добавляем стили для звезд */
@@ -99,10 +99,11 @@ ol {
 }
 
  input,
- select {
+ select,
+ textarea{
     padding: 8px;
     border: 1px solid #ddd;
-    border-radius: 30px;
+    border-radius: 10px;
 }
 
 @keyframes slide-down {
@@ -119,17 +120,43 @@ ol {
 .flex {
     display: flex;
     flex-direction: row;
+    gap: 20px;
 }
 
 .user-info {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
     text-align: center;
+    align-items: center;
+    justify-content: center;
 }
-.user-info div {
-    margin: 20px;
+
+.user-info img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.btn-logout {
+    color: red;
+}
+.user-action {
+    display: flex;
+    gap: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+.user-action a {
+    width: 240px;
+    text-wrap: nowrap;
 }
 
 .new-recipes form{
-    margin: 0 auto;
+    margin: 0 auto 20px;
     width: 900px;
     display: flex;
     gap: 20px;
@@ -187,6 +214,9 @@ ol {
 .m-b {
     margin-bottom: 30px;
 }
+.m-t {
+    margin-top: 30px !important;
+}
 #ingredients-container, #ingredients-container-edit, #steps-container, #steps-container-edit {
     display: flex;
     flex-direction: column;
@@ -195,7 +225,7 @@ ol {
 }
 #ingredients-container .ingredient-item, #ingredients-container-edit .ingredient {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 20px;
+    grid-template-columns: 3fr 1fr 1fr 20px;
     gap: 20px;
 }
 .btn-success.flex {

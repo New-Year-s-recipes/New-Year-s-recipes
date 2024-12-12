@@ -28,6 +28,11 @@ class User extends Authenticatable
         return $this->hasMany(Recipe::class);
     }
 
+    public function advices()
+    {
+        return $this->hasMany(Tip::class);
+    }
+
     public function ratings()
     {
         return $this->hasMany(Rating::class);
@@ -36,6 +41,19 @@ class User extends Authenticatable
     public function favorites()
     {
         return $this->belongsToMany(Recipe::class, 'favorites');
+    }
+
+    public function updateRoleBasedOnApprovedRecipes()
+    {
+        $approvedCount = $this->recipes()->where('status', 'Одобрен')->count();
+
+        if ($approvedCount >= 5) {
+            $this->role = 'expert';
+        } else {
+            $this->role = 'user';
+        }
+
+        $this->save();
     }
 
     /**

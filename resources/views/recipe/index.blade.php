@@ -3,109 +3,210 @@ use Illuminate\Support\Facades\Auth;?>
 @extends('layouts.app')
 @section('content')
     <div>
-        <form action="{{route('recipes.search')}}" method="post">
-            @csrf
-            <input name="searchTerm" type="search"  @if(!empty($searchTerm)) value="{{$searchTerm}}" @endif>
-            <button class="btn-success btn">Поиск</button>
-        </form>
+        <header>
+            <div class="container">
+                <section class="header">
+                    <div class="header-content">
+                        <h1>Новогодние рецепты и кулинарные советы</h1>
+                        <p>Мы предоставляем любителям кулинарии наши невообразимые рецепты и полезные советы. Пробуйте и совершенствуйтесь! </p>
+                    </div>
+                    <div class="image-wrapper">
+                        <img src="{{ asset('images/main.png') }}" alt="main-image">
+                    </div>
+                </section>
+            </div>
+        </header>
 
-        <div class="filter-container">
-            <button id="toggleFilterButton" class="filter-icon">
-                <img src="{{ asset('images/filter-icon.svg') }}" alt="Фильтр">
-            </button>
-
-
-            <form id="filterForm" action="{{ route('recipes.sorting') }}" method="GET" class="hidden filter-form">
-                <div>
-                    <label for="category">Категория:</label>
-                    <select name="category" id="category">
-                        <option value="">Все</option>
-                        <option value="Горячее" {{ $request->category == 'Горячее' ? 'selected' : '' }}>Горячее</option>
-                        <option value="Холодное" {{ $request->category == 'Холодное' ? 'selected' : '' }}>Холодное</option>
-                        <option value="Десерты" {{ $request->category == 'Десерты' ? 'selected' : '' }}>Десерты</option>
-                    </select>
+        <section class="dishes">
+            <div class="container">
+                <div class="dishes__wrapper">
+                    <div class="image-wrapper__dishes">
+                        <a href="{{route('recipesByCategory', $category = 'Горячее')}}">
+                            <img src="{{ asset('images/first-dish.png') }}" alt="first-dish">
+                        </a>
+                        <span>Горячие блюда </span>
+                    </div>
+                    <div class="image-wrapper__dishes">
+                        <a href="{{route('recipesByCategory', $category = 'Холодное')}}">
+                            <img src="{{ asset('images/second-dish.png') }}" alt="second-dish">
+                        </a>
+                        <span>Холодные блюда</span>
+                    </div>
+                    <div class="image-wrapper__dishes">
+                        <a href="{{route('recipesByCategory', $category = 'Десерты')}}">
+                            <img src="{{ asset('images/third-dish.png') }}" alt="third-dish">
+                        </a>
+                        <span>Десерты</span>
+                    </div>
                 </div>
+            </div>
+            <div class="lights">
+                <div class="lights-wrapper"></div>
+            </div>
+        </section>
 
-                <div>
-                    <label for="complexity">Сложность:</label>
-                    <select name="complexity" id="complexity">
-                        <option value="">Все</option>
-                        <option value="Низкая" {{ $request->complexity == 'Низкая' ? 'selected' : '' }}>Низкая</option>
-                        <option value="Средняя" {{ $request->complexity == 'Средняя' ? 'selected' : '' }}>Средняя</option>
-                        <option value="Высокая" {{ $request->complexity == 'Высокая' ? 'selected' : '' }}>Высокая</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="min_calories">Калорийность:</label>
-                    <input type="number" name="min_calories" id="min_calories" placeholder="Мин" value="{{ $request->min_calories }}">
-                    <input type="number" name="max_calories" id="max_calories" placeholder="Макс" value="{{ $request->max_calories }}">
-                </div>
-
-                <div>
-                    <label for="sort_by">Сортировать по:</label>
-                    <select name="sort_by" id="sort_by">
-                        <option value="cooking_time" {{ $request->sort_by == 'cooking_time' ? 'selected' : '' }}>Времени приготовления</option>
-                        <option value="calorie" {{ $request->sort_by == 'calorie' ? 'selected' : '' }}>Калорийности</option>
-                    </select>
-
-                    <label for="sort_order">Порядок:</label>
-                    <select name="sort_order" id="sort_order">
-                        <option value="asc" {{ $request->sort_order == 'asc' ? 'selected' : '' }}>По возрастанию</option>
-                        <option value="desc" {{ $request->sort_order == 'desc' ? 'selected' : '' }}>По убыванию</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-success btn">Применить</button>
-            </form>
-        </div>
-
-
-
-        <ul>
-            @foreach($recipes as $recipe)
-                <li>
-                    @if(Auth::check() && Auth::user()->favorites->contains($recipe->id))
-                        <!-- Удалить из избранного -->
-                        <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
-                            @csrf
-                            <button type="submit">Удалить из избранного</button>
-                        </form>
-                    @else
-                        <!-- Добавить в избранное -->
-                        <form action="{{ route('favorite.add', $recipe->id) }}" method="POST">
-                            @csrf
-                            <button type="submit">Добавить в избранное</button>
-                        </form>
-                    @endif
-                    <img src="{{ asset('storage/' . $recipe->path) }}" alt="Uploaded Photo">
-                    <h1>Рецепт: {{ $recipe->title }}</h1>
-                    <p>Рейтинг: {{ isset($averageRatings[$recipe->id]) ? $averageRatings[$recipe->id] : 'Нет оценок' }}</p>
-                    <p>Автор: {{ $recipe->user->name }}</p>
-                    <p>Описание: {{ $recipe->data['description'] ?? 'Описание отсутствует' }}</p>
-                    <p>Сложность: {{ $recipe->complexity }}</p>
-                    <p>Калорийность: {{ $recipe->data['calorie'] ?? 'Калорийность не указана' }}</p>
-                    <p>Категория: {{ $recipe->category }}</p>
-                    <p>Время приготовления: {{ $recipe->data['cooking_time'] ?? 'Время приготовления не указана' }}</p>
-                    <p>Ингредиенты:</p>
-                    <ul>
-                        @foreach ($recipe->data['ingredients'] as $ingredient)
-                            <li>{{ $ingredient['name'] }}</li>
-                        @endforeach
+        <section class="popular">
+            <div class="container">
+                <div class="popular-wrapper">
+                    <h2>ПОПУЛЯРНЫЕ БЛЮДА</h2>
+                    <ul class="categories">
+                        <li class="item__category">Все</li>
+                        <li class="item__category">Горячее</li>
+                        <li class="item__category">Десерты</li>
+                        <li class="item__category">Холодное</li>
                     </ul>
-                    <p>Шаги:</p>
-                     <ol>
-                        @foreach ($recipe->data['steps'] as $step)
-                            <li>{{ $step }}</li>
-                        @endforeach
-                    </ol>
-                        <a href="{{route('recipesPage', $recipe->id)}}">Подробнее</a>
-                </li>
-            @endforeach
+                </div>
 
-        </ul>
+                <ul class="dishes-slider">
+                    @foreach($recipes as $recipe)
+                        <li>
+                            <a href="{{route('recipesPage', $recipe->id)}}">
+                                <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
+                                <div class="item__dishes_slider">
+                                    <div class="item-info__dishes_slider">
+                                        <span>РЕЦЕПТ</span>
+                                        <p>{{ $recipe->title}}</p>
+                                    </div>
+                                    @if(Auth::check() && Auth::user()->role == 'user')
+                                        @if(Auth::user()->favorites->contains($recipe->id))
+                                            <!-- Удалить из избранного -->
+                                            <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
+                                                @csrf
+                                                <button class="favorite-btn" type="submit"><img src="{{asset('images/favorite.svg')}}" alt="Удалить из избранного"></button>
+                                            </form>
+                                        @else
+                                            <!-- Добавить в избранное -->
+                                            <form action="{{ route('favorite.add', $recipe->id) }}" method="POST">
+                                                @csrf
+                                                <button class="favorite-btn" type="submit"><img src="{{asset('images/unfavorite.svg')}}" alt="Добавить в избранное"></button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </div>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+                <ul class="dishes-slider hidden-slider">
+                    @foreach($hots as $recipe)
+                        <li>
+                            <a href="{{route('recipesPage', $recipe->id)}}">
+                                <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
+                                <div class="item__dishes_slider">
+                                    <div class="item-info__dishes_slider">
+                                        <span>РЕЦЕПТ</span>
+                                        <p>{{ $recipe->title}}</p>
+                                    </div>
+                                    @if(Auth::check() && Auth::user()->role == 'user')
+                                        @if(Auth::user()->favorites->contains($recipe->id))
+                                            <!-- Удалить из избранного -->
+                                            <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
+                                                @csrf
+                                                <button class="favorite-btn" type="submit"><img src="{{asset('images/favorite.svg')}}" alt="Удалить из избранного"></button>
+                                            </form>
+                                        @else
+                                            <!-- Добавить в избранное -->
+                                            <form action="{{ route('favorite.add', $recipe->id) }}" method="POST">
+                                                @csrf
+                                                <button class="favorite-btn" type="submit"><img src="{{asset('images/unfavorite.svg')}}" alt="Добавить в избранное"></button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </div>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+                <ul class="dishes-slider hidden-slider">
+                    @foreach($deserts as $recipe)
+                        <li>
+                            <a href="{{route('recipesPage', $recipe->id)}}">
+                                <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
+                                <div class="item__dishes_slider">
+                                    <div class="item-info__dishes_slider">
+                                        <span>РЕЦЕПТ</span>
+                                        <p>{{ $recipe->title}}</p>
+                                    </div>
+                                    @if(Auth::check() && Auth::user()->role == 'user')
+                                        @if(Auth::user()->favorites->contains($recipe->id))
+                                            <!-- Удалить из избранного -->
+                                            <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
+                                                @csrf
+                                                <button class="favorite-btn" type="submit"><img src="{{asset('images/favorite.svg')}}" alt="Удалить из избранного"></button>
+                                            </form>
+                                        @else
+                                            <!-- Добавить в избранное -->
+                                            <form action="{{ route('favorite.add', $recipe->id) }}" method="POST">
+                                                @csrf
+                                                <button class="favorite-btn" type="submit"><img src="{{asset('images/unfavorite.svg')}}" alt="Добавить в избранное"></button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </div>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+                <ul class="dishes-slider hidden-slider">
+                    @foreach($colds as $recipe)
+                        <li>
+                            <a href="{{route('recipesPage', $recipe->id)}}">
+                                <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
+                                <div class="item__dishes_slider">
+                                    <div class="item-info__dishes_slider">
+                                        <span>РЕЦЕПТ</span>
+                                        <p>{{ $recipe->title}}</p>
+                                    </div>
+                                    @if(Auth::check() && Auth::user()->role == 'user')
+                                        @if(Auth::user()->favorites->contains($recipe->id))
+                                            <!-- Удалить из избранного -->
+                                            <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
+                                                @csrf
+                                                <button class="favorite-btn" type="submit"><img src="{{asset('images/favorite.svg')}}" alt="Удалить из избранного"></button>
+                                            </form>
+                                        @else
+                                            <!-- Добавить в избранное -->
+                                            <form action="{{ route('favorite.add', $recipe->id) }}" method="POST">
+                                                @csrf
+                                                <button class="favorite-btn" type="submit"><img src="{{asset('images/unfavorite.svg')}}" alt="Добавить в избранное"></button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </div>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </section>
+
+        <section class="advice">
+            <div class="container advice-container">
+                <div class="advise-wrapper">
+                    <h2>СОВЕТ ДНЯ</h2>
+                    <div class="content__advice">
+                        <div class="text__advice">
+                            <h5>{{$adviceOfTheDay->title}}</h5>
+                            <p>{{$adviceOfTheDay->text}}</p>
+                        </div>
+                        <div class="image-wrapper__advice">
+                            <img src=" {{ asset('storage/' . $adviceOfTheDay->image_path) }}" alt="advice-image">
+                            <div class="author">
+                                <img src="{{  asset('storage/' . $adviceOfTheDay->user->path) }}" alt="author">
+                                <div class="author__content">
+                                    <span class="name">{{$adviceOfTheDay->user->name}}</span>
+                                    <span class="author-class">Эксперт</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-
+@endsection
+@section('scripts')
+    <script src="{{ asset('js/category-slider.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const toggleButton = document.getElementById('toggleFilterButton');

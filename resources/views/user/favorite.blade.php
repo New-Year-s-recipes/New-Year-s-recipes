@@ -2,47 +2,21 @@
 use Illuminate\Support\Facades\Auth;?>
 @extends('layouts.app')
 @section('content')
-    <a href="{{ route('homePage') }}">Перейти на главную</a>
-    <a href="{{route('profile', ['id' => Auth::user()->id])}}">Профиль</a>
-    <div>
-        <ul>
+    <div class="container m-t">
+        <div class="line-div">
+            <h1>Избранные рецепты</h1>
+            <div class="line"></div>
+        </div>
+        <ul class="row">
             @foreach($recipes as $recipe)
-                <li>
-                    @if(Auth::user()->favorites->contains($recipe->id))
-                        <!-- Удалить из избранного -->
-                        <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
-                            @csrf
-                            <button type="submit">Удалить из избранного</button>
-                        </form>
-                    @else
-                        <!-- Добавить в избранное -->
-                        <form action="{{ route('favorite.add', $recipe->id) }}" method="POST">
-                            @csrf
-                            <button type="submit">Добавить в избранное</button>
-                        </form>
-                    @endif
-                    <img src="{{ asset('storage/' . $recipe->path) }}" alt="Uploaded Photo">
-                    <h1>Рецепт: {{ $recipe->title }}</h1>
-                    <p>Рейтинг: {{ isset($averageRatings[$recipe->id]) ? $averageRatings[$recipe->id] : 'Нет оценок' }}</p>
-                    <p>Автор: {{ $recipe->user->name }}</p>
-                    <p>Описание: {{ $recipe->data['description'] ?? 'Описание отсутствует' }}</p>
-                    <p>Сложность: {{ $recipe->complexity }}</p>
-                    <p>Калорийность: {{ $recipe->data['calorie'] ?? 'Калорийность не указана' }}</p>
-                    <p>Категория: {{ $recipe->category }}</p>
-                    <p>Время приготовления: {{ $recipe->data['cooking_time'] ?? 'Время приготовления не указана' }}</p>
-                    <p>Ингредиенты:</p>
-                    <ul>
-                        @foreach ($recipe->data['ingredients'] as $ingredient)
-                            <li>{{ $ingredient['name'] }}</li>
-                        @endforeach
-                    </ul>
-                    <p>Шаги:</p>
-                    <ol>
-                        @foreach ($recipe->data['steps'] as $step)
-                            <li>{{ $step }}</li>
-                        @endforeach
-                    </ol>
-                        <a href="{{route('recipesPage', $recipe->id)}}">Подробнее</a>
+                <li class="my-recipe">
+                    <div class="recipe-actions">
+                            <form action="{{ route('favorite.remove', $recipe->id) }}" method="POST">
+                                @csrf
+                                <button class="favorite-remove-btn" type="submit"><img src="{{asset('images/favorite.svg')}}" alt="Удалить из избранного"></button>
+                            </form>
+                    </div>
+                        <x-dishCard :dish="$recipe"/>
                 </li>
             @endforeach
 

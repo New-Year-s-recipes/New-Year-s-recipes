@@ -1,15 +1,14 @@
 @extends('layouts.app')
 @section('content')
 
-    <div class="new-recipes">
+    <div class="new-recipes m-t">
         <form action="{{ route('recipes_edit', ['id' => $recipe->id]) }}" method="post" enctype="multipart/form-data">
             @csrf
+            <div class="new-recipes-photo">
+                <img src="{{ asset('storage/' . $recipe->path) }}" alt="Фото рецепта" style="max-width: 200px;">
 
-            <div>
-                <label class="new-recipes-photo">
-                    <input id="photoInput-edit" type="file" name="photo" accept="image/jpeg, image/jpg, image/png" required hidden>
-                    <img id="imagePreview-edit" src="{{ asset('storage/' . $recipe->path) }}" alt="photo" style="max-width: 100%; height: auto; display: block;">
-                </label>
+                <label>Загрузить новое фото:</label>
+                <input type="file" name="photo">
             </div>
             @error('photo')
             <div><p>{{ $message }}</p></div>

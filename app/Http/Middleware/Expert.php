@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\Response;
 
-class User
+class Expert
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class User
     public function handle(Request $request, Closure $next): Response
     {
         $role = Auth::user()->role;
-        if ($role == 'user' || $role == 'expert') {
+        if ($role == 'expert') {
             return $next($request);
         }
         return Redirect::route('homePage');
