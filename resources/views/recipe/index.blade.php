@@ -206,6 +206,61 @@ use Illuminate\Support\Facades\Auth;?>
         </section>
         @endif
     </div>
+    <div class="contai">
+        <h2>СОВЕТЫ ЭКСПЕРТОВ</h2> 
+        <div class="expert-tips">
+            <div class="tip">
+                <img src="{{ asset('images/midii.png') }}" alt="Изображение 1">
+            <div clss="tip-info">
+                <p>Как чистить и готовить мидии</p>
+                <p11>Кулинарный раздел</p11>
+                <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
+            </div>
+            </div>
+            <div class="tip">
+                <img src="{{ asset('images/myka (2).png') }}" alt="Изображение 2">
+                <div clss="tip-info">
+                <p>Лучшие заменители кукурузного крахмала по мнению профессионалов</p>
+                <p11>Кулинарный раздел</p11>
+                <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
+                </div>
+            </div>
+            <div class="tip">
+                <img src="{{ asset('images/syp (2).png') }}" alt="Изображение 3">
+                <div clss="tip-info">
+                <p>Вот как сделать еду менее соленой</p>
+                <p11>Кулинарный раздел</p11>
+                <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cont">
+        <div class="form-wrapper">
+            <div class="image left-image">
+            <img src="{{ asset('images/mrn.png') }}" alt="Изображение 1">
+            </div>
+            <form class="recipe-form">
+                <h2>ДОБАВЬ СВОЙ РЕЦЕПТ</h2>
+                <input type="text" placeholder="ФИО" required>
+                <input type="email" placeholder="Почта" required>
+                <input type="text" placeholder="Название рецепта" required>
+                <textarea placeholder="Комментарии" required></textarea>
+                <button type="submit">Добавить</button>
+            </form>
+            <div class="image right-image">
+            <img src="{{ asset('images/chicken.png') }}" alt="Изображение 2">
+            </div>
+        </div>
+    </div>
+    <div class="foter">
+    <div class="footer">
+        <div class="background"></div>
+        <div class="dots">
+        <img src="{{ asset('images/50.png') }}" alt="Изображение 2">
+        </div>
+    </div>
+
 @endsection
 @section('scripts')
     <script src="{{ asset('js/category-slider.js') }}"></script>
@@ -226,3 +281,4 @@ use Illuminate\Support\Facades\Auth;?>
         });
     </script>
 @endsection
+

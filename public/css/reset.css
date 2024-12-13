@@ -22,3 +22,140 @@ button {
     font-family: "Zen Maru Gothic", sans-serif;
     font-weight: 500;
 }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.contai {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+.contai h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+}
+.expert-tips {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+.tip {
+    width: 30%;
+    margin: 15px; /* Увеличиваем расстояние между фотографиями */
+}
+.tip img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.tip p {
+    margin: 10px 0;
+    color: #000000;
+}
+.tip p11 {
+    margin: 10px 0;
+    color: #e70c0c;
+    display: flex;
+}
+.tip-info {
+display: flex;
+justify-content: space-around;
+}
+
+.cont { 
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.recipe-form input{
+    border-radius: 38px;
+}
+.recipe-form {
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recipe-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.recipe-form input, .recipe-form textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 38px;
+    font-size: 17px;
+}
+
+.recipe-form textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.recipe-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    background-color: #3B5C41;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 17px;
+}
+.content {
+    min-height: 100vh; /* Убедитесь, что контент занимает всю высоту экрана */
+    padding: 20px;
+}
+
+.footer {
+    position: relative;
+    width: 100%;
+    height: 100px; /* Высота подвала */
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #3B5C41; /* Темно-зеленый фон */
+    
+}
+
+.dots {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px; /* Центрируем точки по вертикали */
+   
+}
