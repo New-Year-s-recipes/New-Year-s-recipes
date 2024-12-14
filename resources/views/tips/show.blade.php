@@ -1,19 +1,26 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="ru">
 
-@section('content')
-    <div class="container show m-t">
-        <div>
-            <img class="recipe-image" src="{{ asset('storage/' . $tip->image_path) }}" alt="Фото совета">
-            <h2>{{$tip->title}}</h2>
-            <p class="recipe-description">{{ $tip->description }}</p>
-            <p>{{ $tip->text }}</p>
-        </div>
-        <div class="author">
-            <img src="{{ asset('storage/' . $tip->user->path) }}" alt="Автор">
-            <div>
-                <h4>{{ $tip->user->name }}</h4>
-                <p>Автор</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/tip.css') }}">
+    <title>{{ $tip->title }}</title>
+</head>
+
+<body>
+    <div class="tip-container">
+        <button onclick="goBack()" class="back-link">⟵ вернуться назад</button>
+        <h1 class="tip-title">{{ $tip->title }}</h1>
+        <div class="tip-content">
+            <img class="tip-image" src="{{ asset('storage/' . $tip->image_path) }}" alt="Изображение совета" />
+            <div class="tip-details">
+                <p class="tip-description">{{ $tip->description }}</p>
+                <p class="tip-text">{{ $tip->text }}</p>
             </div>
         </div>
     </div>
-@endsection
+    <script src="{{ asset('js/go-back.js') }}"></script>
+</body>
+
+</html>

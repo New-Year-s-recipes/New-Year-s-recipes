@@ -258,7 +258,7 @@ class RecipeSeeder extends Seeder
 
 
             Recipe::create([
-                'user_id' => Auth::id() ?? 8, // Если сид запускается без авторизации, используем ID по умолчанию
+                'user_id' => Auth::id() ?? 1, // Если сид запускается без авторизации, используем ID по умолчанию
                 'title' => $validated['title'],
                 'mini_description' => $validated['mini_description'],
                 'data' => [
