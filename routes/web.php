@@ -8,6 +8,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TipController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,3 +79,5 @@ Route::middleware('auth')->group(function () {
         Route::post('/edit/tip/{id}', [TipController::class, 'edit'])->name('tips_edit');
     });
 });
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
