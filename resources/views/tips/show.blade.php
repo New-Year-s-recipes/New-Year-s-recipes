@@ -18,6 +18,9 @@
                 <p class="tip-description">{{ $tip->description }}</p>
                 <p class="tip-text">{{ $tip->text }}</p>
             </div>
+            <div>
+                <h1>Оцените совет эксперта</h1>
+            </div>
         </div>
     </div>
     <script src="{{ asset('js/go-back.js') }}"></script>
