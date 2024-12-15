@@ -98,4 +98,10 @@ class TipController extends Controller
 
         return $validated;
     }
+
+    public function show($id)
+    {
+        $tip = Tip::findOrFail($id);
+        return view('tips.show', compact('tip'));
+    }
 }

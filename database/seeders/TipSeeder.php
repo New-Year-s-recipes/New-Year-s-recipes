@@ -57,7 +57,7 @@ class TipSeeder extends Seeder
 
 
             Tip::create([
-                'user_id' => Auth::id() ?? 8, // Если сид запускается без авторизации, используем ID по умолчанию
+                'user_id' => Auth::id() ?? 1, // Если сид запускается без авторизации, используем ID по умолчанию
                 'title' => $validated['title'],
                 'description' => $validated['description'],
                 'text' => $validated['text'],

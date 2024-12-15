@@ -27,6 +27,7 @@ Route::get('/recipes/{category}', [RecipeController::class, 'category'])->name('
 Route::get('/recipes', [SearchController::class, 'sorting'])->name('recipes.sorting');*/
 Route::get('/tips', [TipController::class, 'index'])->name('tips.index');
 Route::get('/tips/more/{id}', [TipController::class, 'more'])->name('tipsPage');
+Route::get('/tips/{id}', [TipController::class, 'show'])->name('tips.show');
 
 Route::get('/experts-tips', function () {
     return view('experts-tips');
@@ -35,15 +36,12 @@ Route::get('/experts-tips', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/register', [UserController::class, 'registerPage'])->name('registerPage');
     Route::post('/register', [UserController::class, 'register'])->name('register');
-
     Route::get('/login', [UserController::class, 'loginPage'])->name('loginPage');
     Route::post('/login', [UserController::class, 'login'])->name('login');
 });
 
 Route::middleware('auth')->group(function () {
-
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
     Route::middleware('user')->group(function () {
         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('profile');
         Route::get('/profile/edit/{id}', [UserController::class, 'editProfile'])->name('profile_edit');

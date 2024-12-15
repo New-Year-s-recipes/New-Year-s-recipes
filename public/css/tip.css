@@ -18,7 +18,7 @@ body {
     color: #000000;
     text-align: center;
     margin-bottom: 40px;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .tips-grid {
@@ -112,7 +112,7 @@ body {
     font-size: 1.1em;
     color: #395E3F;
     margin-bottom: 20px;
-    background:none;
+    background: none;
     border: none;
     display: inline-block;
 }
@@ -127,9 +127,86 @@ body {
     font-style: normal;
     font-weight: normal;
 }
+
 @font-face {
     font-family: "Montserrat-Light";
     src: url("../fonts/Montserrat-Light.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
+}
+
+.details-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.details-button:hover {
+    background-color: #0056b3;
+}
+
+.tip-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-link:hover {
+    background-color: #0056b3;
+}
+
+.tip-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #222;
+}
+
+.tip-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tip-image {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tip-details {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.tip-description {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.tip-text {
+    font-size: 14px;
+    color: #555;
 }
