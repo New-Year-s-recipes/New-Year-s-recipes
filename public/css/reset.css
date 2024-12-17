@@ -111,7 +111,7 @@ justify-content: space-around;
     margin: 10px 0;
     padding: 15px;
     border: 1px solid #ccc;
-    border-radius: 38px;
+    border-radius: 10px;
     font-size: 17px;
 }
 
@@ -158,10 +158,6 @@ justify-content: space-around;
     align-items: center;
     height: 50px; /* Центрируем точки по вертикали */
    
-}
-
-.right-image{
-    padding: 70px;
 }
 
 .click-form:hover{
