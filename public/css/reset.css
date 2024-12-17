@@ -148,7 +148,7 @@ justify-content: space-around;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #3B5C41; /* Темно-зеленый фон */
+    background-color: #3B5C41; 
 }
 
 .dots {
@@ -156,10 +156,9 @@ justify-content: space-around;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px; /* Центрируем точки по вертикали */
+    height: 50px; 
    
 }
-
 
 .click-form:hover{
     background-color: #224128;
