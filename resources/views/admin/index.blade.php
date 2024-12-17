@@ -17,8 +17,7 @@
     </ul>
     <ul class="searchStyle">
         <form method="GET" action="{{ route('admin') }}" class="search-form">
-            <input type="text" name="search" placeholder="Введите запрос..." value="{{ request('search') }}"
-                class="form-control" />
+            <input type="text" name="search" placeholder="Введите запрос..." value="{{ request('search') }}"class="form-control" />
             <button type="submit" class="btn btn-primary">Поиск</button>
         </form>
     </ul>
