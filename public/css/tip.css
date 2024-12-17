@@ -46,13 +46,13 @@ body {
 
 .tip-card {
     overflow: hidden;
-    width: 100%;
+    width: 80%;
     transition: transform 0.3s ease;
 }
 
 .tip-card img {
-    width: 630px;
-    height: 500px;
+    width: 430px;
+    height: 300px;
     object-fit: cover;
     border-bottom: 2px solid #eee;
 }

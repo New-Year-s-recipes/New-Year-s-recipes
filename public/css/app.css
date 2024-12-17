@@ -221,6 +221,7 @@ ol {
 }
 .m-t {
     margin-top: 30px !important;
+    margin-bottom: 100px !important;
 }
 #ingredients-container, #ingredients-container-edit, #steps-container, #steps-container-edit {
     display: flex;

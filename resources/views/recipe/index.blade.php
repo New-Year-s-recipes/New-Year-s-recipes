@@ -216,35 +216,50 @@ use Illuminate\Support\Facades\Auth;?>
         </section>
     @endif
 </div>
-<div class="contai">
-    <h2>СОВЕТЫ ЭКСПЕРТОВ</h2>
-    <div class="expert-tips">
-        <div class="tip">
-            <img src="{{ asset('images/midii.png') }}" alt="Изображение 1">
-            <div clss="tip-info">
-                <p>Как чистить и готовить мидии</p>
-                <p11>Кулинарный раздел</p11>
-                <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
-            </div>
+
+<section class="expert-advice">
+    <div class="container">
+        <h2>СОВЕТЫ ЭКСПЕРТОВ</h2>
+        <ul class="expert-advice-slider">
+            <li>
+
+                <img src="{{ asset('images/midii.png') }}" alt="Изображение 1">
+                <div class="item__dishes_slider">
+                    <div class="item-info__dishes_slider">
+                        <span>КУХОННАЯ РАЗВЕДКА</span>
+                        <p>Как чистить и готовить мидии</p>
+                    </div>
+                    <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
+                </div>
+            </li>
+            <li>
+                <img src="{{ asset('images/myka.png') }}" alt="Изображение 1">
+                <div class="item__dishes_slider">
+                    <div class="item-info__dishes_slider">
+                        <span>КУХОННАЯ РАЗВЕДКА</span>
+                        <p>Лучшие заменители кукурузного крахмала по мнению профессионалов</p>
+                    </div>
+                    <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
+                </div>
+            </li>
+            <li>
+                <img src="{{ asset('images/syp.png') }}" alt="Изображение 1">
+                <div class="item__dishes_slider">
+                    <div class="item-info__dishes_slider">
+                        <span>КУХОННАЯ РАЗВЕДКА</span>
+                        <p>Вот как сделать еду менее соленой</p>
+                    </div>
+                    <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
+                </div>
+            </li>
+        </ul>
+        <div class="expert-advice-btn">
+            <a href="{{route('tips.index')}}"><button type="submit">Посмотреть все</button></a>
         </div>
-        <div class="tip">
-            <img src="{{ asset('images/myka (2).png') }}" alt="Изображение 2">
-            <div clss="tip-info">
-                <p>Лучшие заменители кукурузного крахмала по мнению профессионалов</p>
-                <p11>Кулинарный раздел</p11>
-                <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
-            </div>
-        </div>
-        <div class="tip">
-            <img src="{{ asset('images/syp (2).png') }}" alt="Изображение 3">
-            <div clss="tip-info">
-                <p>Вот как сделать еду менее соленой</p>
-                <p11>Кулинарный раздел</p11>
-                <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
-            </div>
-        </div>
-    </div>
-</div>
+        
+</section>
+
+
 <div class="cont">
     @if (session('success'))
         <div class="alert alert-success">
@@ -271,32 +286,23 @@ use Illuminate\Support\Facades\Auth;?>
     </div>
 </div>
 
+@endsection
+@section('scripts')
+<script src="{{ asset('js/category-slider.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleButton = document.getElementById('toggleFilterButton');
+        const filterForm = document.getElementById('filterForm');
 
-<div class="foter">
-    <div class="footer">
-        <div class="background"></div>
-        <div class="dots">
-            <img src="{{ asset('images/50.png') }}" alt="Изображение 2">
-        </div>
-    </div>
-
-    @endsection
-    @section('scripts')
-    <script src="{{ asset('js/category-slider.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const toggleButton = document.getElementById('toggleFilterButton');
-            const filterForm = document.getElementById('filterForm');
-
-            toggleButton.addEventListener('click', function () {
-                if (filterForm.classList.contains('hidden')) {
-                    filterForm.classList.remove('hidden');
-                    filterForm.style.display = 'block';
-                } else {
-                    filterForm.classList.add('hidden');
-                    filterForm.style.display = 'none';
-                }
-            });
+        toggleButton.addEventListener('click', function () {
+            if (filterForm.classList.contains('hidden')) {
+                filterForm.classList.remove('hidden');
+                filterForm.style.display = 'block';
+            } else {
+                filterForm.classList.add('hidden');
+                filterForm.style.display = 'none';
+            }
         });
-    </script>
-    @endsection
+    });
+</script>
+@endsection
