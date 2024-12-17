@@ -82,3 +82,4 @@ Route::middleware('auth')->group(function () {
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
 Route::get('/admin/{status?}', [AdminController::class, 'search'])->name('admin');
+Route::post('/recipes/edit/{id}', [RecipeController::class, 'update'])->name('recipes_edit');

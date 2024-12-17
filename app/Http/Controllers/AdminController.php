@@ -9,12 +9,17 @@ class AdminController extends Controller
 {
     public function index($status)
     {
-        if ($status == 'all') {
-            $recipes = Recipe::all();
-        } else
-            $recipes = Recipe::all()->where('status', $status);
+        $query = Recipe::query();
 
-        return view('admin.index', compact('recipes'));
+        // Если статус не 'all', фильтруем рецепты по статусу
+        if ($status != 'all') {
+            $query->where('status', $status);
+        }
+
+        // Пагинация с 6 рецептами на странице
+        $recipes = $query->paginate(6);
+
+        return view('admin.index', compact('recipes', 'status'));
     }
 
     public function statusApproved($id)
@@ -36,21 +41,28 @@ class AdminController extends Controller
         }
         return redirect()->back();
     }
+
     public function search(Request $request, $status = 'all')
     {
         $search = $request->input('search');
         $query = Recipe::query();
+
+        // Если статус не 'all', фильтруем рецепты по статусу
         if ($status != 'all') {
             $query->where('status', $status);
         }
+
+        // Если есть запрос на поиск
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('title', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
-        $recipes = $query->get();
+
+        // Пагинация с 6 рецептами на странице
+        $recipes = $query->paginate(4);
+
         return view('admin.index', compact('recipes', 'status'));
     }
-
 }

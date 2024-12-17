@@ -88,13 +88,18 @@
                 </ul>
             </div>
             <div class="steps">
-                <h3>Приготовление:</h3>
-                <ol>
-                    @foreach ($recipe->data['steps'] as $step)
-                        <li>{{ $step }}</li>
-                    @endforeach
-                </ol>
-            </div>
+    <h3>Шаги приготовления:</h3>
+    <ol>
+        @foreach ($recipe->steps as $step)
+            <li>
+                <p>{{ $step->description }}</p>
+                @if($step->photo)
+                <img src="{{ asset('storage/' . $step->photo) }}" alt="Фото шага" class="step-photo">
+                @endif
+            </li>
+        @endforeach
+    </ol>
+</div>  
         </div>
 
         <div class="recipe-add-info">
