@@ -499,6 +499,7 @@ header {
     background-image: url('../images/lights.png');
 }
 
+
 .popular {
     display: flex;
     flex-direction: column;
@@ -656,12 +657,81 @@ header {
     gap: 10px;
     padding: 16px 10px;
     position: relative;
+    justify-content: space-between;
 }
 
 .item-info__dishes_slider span {
     color: #F01227;
     font-size: 11px;
 }
+
+.expert-advice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px 0 100px 0;
+}
+
+
+.expert-advice h2 {
+    font-family: 'Montserrat-Regular', sans-serif;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.expert-advice-slider {
+    max-width: 98vw;
+    overflow-x: auto;
+    display: flex;
+    gap: 20px;
+    padding: 0 20px;
+    scrollbar-width: thin;
+    scrollbar-color: #3B5C41 white;
+}
+
+.expert-advice-btn {
+    text-align: center;
+}
+
+
+.expert-advice-btn button{
+    font-family: 'Inter_18pt-Bold', sans-serif;
+    cursor: pointer;
+    color: #ffffff;
+    min-width: 152px;
+    border-radius: 50px;
+    border-style:none;
+    text-align: center;
+    background-color: #3B5C41;
+    padding: 12px 0;
+    margin-top: 50px;
+}
+
+.recipe-form h2{
+    font-family: 'Montserrat-Regular', sans-serif;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.recipe-form h3{
+    font-family: 'Montserrat-Regular', sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+
+.footer-lights {
+    margin: 0 auto;
+    background-color: #3A5232;
+}
+
+.footer-lights-wrapper {
+    height: 138px;
+    background-image: url(../images/lights.png);
+    transform: translateY(-60px);
+}
+
 
 
 

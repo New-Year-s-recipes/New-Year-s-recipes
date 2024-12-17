@@ -50,7 +50,9 @@
 </main>
 
 <footer>
-
+<div class="footer-lights">
+            <div class="footer-lights-wrapper"></div>
+        </div>
 </footer>
 @yield('scripts')
 <script src="{{ asset('js/go-back.js') }}"></script>
