@@ -692,3 +692,22 @@ header {
     font-style: normal;
     font-weight: normal;
 }
+
+/* кнопка выйти в админ понели*/
+
+.btn-logout{
+    background-color: #F01227;
+    padding: 9px 31px;
+    border-radius: 18px;
+    color: #fff;
+}
+
+.btn-logout:hover{
+    background-color: #a30f1d;
+    transition: 0.3s;
+}
+
+
+/* В*/
+
+
