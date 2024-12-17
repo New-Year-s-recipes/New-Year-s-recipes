@@ -7,16 +7,18 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index($status){
+    public function index($status)
+    {
         if ($status == 'all') {
             $recipes = Recipe::all();
-        }
-        else $recipes = Recipe::all()->where('status', $status);
+        } else
+            $recipes = Recipe::all()->where('status', $status);
 
         return view('admin.index', compact('recipes'));
     }
 
-    public function statusApproved($id) {
+    public function statusApproved($id)
+    {
         $recipe = Recipe::findOrFail($id);
         if ($recipe->status == "На рассмотрении") {
             $recipe->status = "Одобрен";
@@ -25,7 +27,8 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function statusRejected($id) {
+    public function statusRejected($id)
+    {
         $recipe = Recipe::findOrFail($id);
         if ($recipe->status == "На рассмотрении") {
             $recipe->status = "Отклонен";
@@ -33,4 +36,21 @@ class AdminController extends Controller
         }
         return redirect()->back();
     }
+    public function search(Request $request, $status = 'all')
+    {
+        $search = $request->input('search');
+        $query = Recipe::query();
+        if ($status != 'all') {
+            $query->where('status', $status);
+        }
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('title', 'like', "%{$search}%");
+            });
+        }
+        $recipes = $query->get();
+        return view('admin.index', compact('recipes', 'status'));
+    }
+
 }
