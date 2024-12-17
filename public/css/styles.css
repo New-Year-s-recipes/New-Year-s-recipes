@@ -103,7 +103,7 @@ nav ul li a:hover {
 }
 
 .row {
-    margin-top: 50px;
+    margin: 100px 0 100px 0;
     display: grid;
     gap: 40px;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -229,7 +229,7 @@ nav ul li a:hover {
 .btn-error {
     cursor: pointer;
     padding: 10px 40px;
-    background-color: rgba(255, 0, 0, 0.49);
+    background-color: #F01227;
     border: none;
     color: #fff;
     border-radius: 40px;
@@ -239,7 +239,7 @@ nav ul li a:hover {
 }
 
 .btn-error:hover {
-    background-color: #f30303;
+    background-color: #a30f1d;
 }
 
 
@@ -685,7 +685,7 @@ header {
     display: flex;
     gap: 20px;
     padding: 0 20px;
-    scrollbar-width: thin;
+    scrollbar-width: inherit;
     scrollbar-color: #3B5C41 white;
 }
 
