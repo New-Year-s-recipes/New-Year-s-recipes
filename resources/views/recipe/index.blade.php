@@ -263,7 +263,7 @@ use Illuminate\Support\Facades\Auth;?>
             <input type="text" name="name" placeholder="ФИО" required>
             <input type="email" name="email" placeholder="Почта" required>
             <textarea name="comments" placeholder="Комментарии" required></textarea>
-            <button type="submit">Добавить</button>
+            <button class="click-form" type="submit">Добавить</button>
         </form>
         <div class="image right-image">
             <img src="{{ asset('images/chicken.png') }}" alt="Изображение 2">

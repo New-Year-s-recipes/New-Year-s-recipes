@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <div class="container mt-4 m-t">
         <div class="user-info">
             <h2>{{Auth::user()->name}}</h2>
