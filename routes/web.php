@@ -83,3 +83,4 @@ Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.s
 Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
 Route::get('/admin/{status?}', [AdminController::class, 'search'])->name('admin');
 Route::post('/recipes/edit/{id}', [RecipeController::class, 'update'])->name('recipes_edit');
+Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');

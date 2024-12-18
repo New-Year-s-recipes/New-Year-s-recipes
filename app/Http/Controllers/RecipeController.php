@@ -179,18 +179,28 @@ class RecipeController extends Controller
     {
         $validated = $this->validateData($request, true);
 
-        // Обработка ингредиентов
-        $ingredientsArray = array_map(function ($name, $index) use ($validated) {
-            return [
-                'name' => trim($name),
-                'quantity' => trim($validated['ingredient_quantity'][$index]),
-                'unit' => trim($validated['ingredient_unit'][$index]),
-            ];
-        }, $validated['ingredients'], array_keys($validated['ingredients']));
 
-        // Обработка шагов
-        $stepsArray = array_map('trim', $validated['steps']);  // Формируем массив шагов
+           if(isset($validated['ingredients']) && is_array($validated['ingredients'])){
+                // Обработка ингредиентов
+                $ingredientsArray = array_map(function ($name, $index) use ($validated) {
+                return [
+                    'name' => trim($name),
+                    'quantity' => trim($validated['ingredient_quantity'][$index]),
+                    'unit' => trim($validated['ingredient_unit'][$index]),
+                ];
+            }, $validated['ingredients'], array_keys($validated['ingredients']));
 
+           } else {
+               $ingredientsArray = [];
+           }
+
+         if(isset($validated['steps']) && is_array($validated['steps'])){
+               // Обработка шагов
+            $stepsArray = array_map('trim', $validated['steps']);
+         } else {
+            $stepsArray = [];
+        }
+      
         $cookingHours = $validated['cooking_hours'];
         $cookingMinutes = $validated['cooking_minutes'];
 
@@ -229,17 +239,18 @@ class RecipeController extends Controller
             Step::create([
                 'recipe_id' => $recipe->id,
                 'description' => $step,
-                'photo' => null,  // Фото шагов при редактировании, если оно не передается
+                'photo' => null,  
             ]);
         }
 
         return redirect()->back()->with('success', 'Рецепт успешно обновлён!');
     }
 
+
     public function more($id)
     {
         $recipe = Recipe::findOrFail($id);
-        $recipe->increment('views'); // Увеличивает поле `views` на 1
+        $recipe->increment('views'); 
         $userRatings = Rating::all()->where('user_id', Auth::id())->where('recipe_id', $recipe->id)->first();
 
         $ratings = Rating::all();
@@ -254,7 +265,7 @@ class RecipeController extends Controller
     private function validateData(Request $request, $isUpdate = false)
     {
         $photoRule = $isUpdate ? 'image|mimes:jpeg,png,jpg|max:2048' : 'required|image|mimes:jpeg,png,jpg|max:2048';
-
+    
         $validated = $request->validate([
             'title' => 'required|string|max:100',
             'photo' => $photoRule,
@@ -263,23 +274,23 @@ class RecipeController extends Controller
             'category' => 'required|in:Горячее,Холодное,Десерты',
             'complexity' => 'required|in:Высокая,Средняя,Низкая',
             'calorie' => 'required|integer|min:1',
-
+    
             'cooking_hours' => 'required|integer|min:0|max:24',
             'cooking_minutes' => 'required|integer|min:0|max:59',
-
+    
             'ingredients' => 'required|array|min:1',
             'ingredients.*' => 'required|string',
-
+    
             'ingredient_quantity' => 'required|array|min:1',
-            'ingredient_quantity.*' => 'required|integer|min:1',
-
+            'ingredient_quantity.*' => 'required|string|min:1', 
+    
             'ingredient_unit' => 'required|array|min:1',
-            'ingredient_unit.*' => 'required|string|in:г,кг,мл,л,шт,чашка,ст. ложка,чайная ложка',
-
+            'ingredient_unit.*' => 'required|string',
+    
             'steps' => 'required|array|min:1',
             'steps.*' => 'required|string',
         ]);
-
+    
         return $validated;
     }
     public function show($id)
@@ -289,44 +300,44 @@ class RecipeController extends Controller
         return view('recipes.show', compact('recipe'));
     }
     public function update(Request $request, $id)
-    {
-        $recipe = Recipe::find($id);
+{
+    $recipe = Recipe::find($id);
 
-        // Валидация
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'mini_description' => 'required|string',
-            'description' => 'nullable|string',
-            'cooking_hours' => 'required|integer',
-            'cooking_minutes' => 'required|integer',
-            'calorie' => 'required|integer',
-            'complexity' => 'required|string',
-            'category' => 'required|string',
-            'ingredients' => 'required|array',
-            'steps' => 'required|array',
-        ]);
+    // Валидация
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'mini_description' => 'required|string',
+        'description' => 'nullable|string',
+        'cooking_hours' => 'required|integer',
+        'cooking_minutes' => 'required|integer',
+        'calorie' => 'required|integer',
+        'complexity' => 'required|string',
+        'category' => 'required|string',
+        'ingredients' => 'required|array',
+        'steps' => 'required|array',
+    ]);
 
-        // Обновление данных
-        $recipe->title = $validated['title'];
-        $recipe->mini_description = $validated['mini_description'];
-        $recipe->data = [
-            'description' => $validated['description'],
-            'cooking_time' => $validated['cooking_hours'] . ':' . $validated['cooking_minutes'],
-            'calorie' => $validated['calorie'],
-            'ingredients' => $validated['ingredients'],
-            'steps' => $validated['steps'],
-        ];
-        $recipe->complexity = $validated['complexity'];
-        $recipe->category = $validated['category'];
+    // Обновление данных
+    $recipe->title = $validated['title'];
+    $recipe->mini_description = $validated['mini_description'];
+    $recipe->setAttribute('data', [ // Используем setAttribute для JSON поля
+        'description' => $validated['description'],
+        'cooking_time' => $validated['cooking_hours'] . ':' . $validated['cooking_minutes'],
+        'calorie' => $validated['calorie'],
+        'ingredients' => $validated['ingredients'],
+        'steps' => $validated['steps'],
+    ]);
+    $recipe->complexity = $validated['complexity'];
+    $recipe->category = $validated['category'];
 
-        // Обработка файла (если он есть)
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('recipes');
-            $recipe->path = $path;
-        }
-
-        $recipe->save();
-
-        return redirect()->route('recipes.show', ['id' => $recipe->id])->with('success', 'Рецепт обновлен!');
+    // Обработка файла (если он есть)
+    if ($request->hasFile('photo')) {
+        $path = $request->file('photo')->store('recipes');
+        $recipe->path = $path;
     }
+
+    $recipe->save();
+
+    return redirect()->route('profile', ['id' => $recipe->id])->with('success', 'Рецепт обновлен!');
+}
 }
