@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CouncilEvaluation;
 use Illuminate\Http\Request;
 use App\Models\Tip;
 use Illuminate\Support\Facades\Auth;
@@ -103,5 +104,26 @@ class TipController extends Controller
     {
         $tip = Tip::findOrFail($id);
         return view('tips.show', compact('tip'));
+    }
+    public function council_evaluation_add(Request $request, $id)
+    {
+        // Получаем текущего авторизованного пользователя
+        $user = Auth::user();
+
+        // Проверка на наличие значения в поле "rating"
+        $rating = $request->input('rating');
+        if (!$rating) {
+            return redirect()->back()->with('error', 'Выбери что нибуть');
+        }
+
+        // Создаем новую запись в таблице council_evaluation
+        CouncilEvaluation::create([
+            'users_id' => $user->id,  // ID текущего пользователя
+            'rating' => $rating,       // Оценка, полученная из формы
+            'tips_id' => $id,          // ID совета из URL
+        ]);
+
+        // Перенаправляем обратно с сообщением об успешном добавлении
+        return redirect()->route('tips.show', ['id' => $id])->with('success', 'Оценка выдана');
     }
 }

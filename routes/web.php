@@ -30,6 +30,8 @@ Route::get('/tips', [TipController::class, 'index'])->name('tips.index');
 Route::get('/tips/more/{id}', [TipController::class, 'more'])->name('tipsPage');
 Route::get('/tips/{id}', [TipController::class, 'show'])->name('tips.show');
 
+Route::post('/tips/{id}/council_evaluation', [TipController::class, 'council_evaluation_add'])->name('tips.council_evaluation_add');
+
 Route::get('/experts-tips', function () {
     return view('experts-tips');
 });
