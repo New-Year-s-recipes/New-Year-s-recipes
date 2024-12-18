@@ -12,6 +12,8 @@
 </head>
 
 <body class="container" style="padding-top: 20px">
+
+
     <a href="{{route('profile', ['id' => Auth::user()->id])}}" class="back-link">⟵ вернуться назад</a>
 
     <div class="new-recipes" style="padding-top: 50px">
@@ -59,28 +61,34 @@
             </fieldset>
 
             <fieldset class="form-input grid">
-                <div class="grid time">
-                    <label>Время готовки:</label>
-                    <!-- Поле для ввода часов -->
-                    <input type="number" name="cooking_hours" min="0"
-                        value="{{ old('cooking_hours', explode(':', $recipe->data['cooking_time'])[0]) }}"
-                        placeholder="Часы" required>
-                    :
-                    <!-- Поле для ввода минут -->
-                    <input type="number" name="cooking_minutes" min="0" max="59"
-                        value="{{ old('cooking_minutes', explode(':', $recipe->data['cooking_time'])[1]) }}"
-                        placeholder="Минуты" required>
-                    @error('cooking_hours')
-                        <div>
-                            <p>{{ $message }}</p>
-                        </div>
-                    @enderror
-                    @error('cooking_minutes')
-                        <div>
-                            <p>{{ $message }}</p>
-                        </div>
-                    @enderror
-                </div>
+            <div class="grid time">
+                <label>Время готовки:</label>
+                <!-- Поле для ввода часов -->
+                @php
+                   $cookingTime = isset($recipe->data['cooking_time']) && is_string($recipe->data['cooking_time']) ? $recipe->data['cooking_time'] : '0:0';
+                   $timeParts = explode(':', $cookingTime);
+                   $hours = isset($timeParts[0]) ? intval($timeParts[0]) : 0;
+                   $minutes = isset($timeParts[1]) ? intval($timeParts[1]) : 0;
+                @endphp
+                <input type="number" name="cooking_hours" min="0"
+                   value="{{ old('cooking_hours', $hours) }}"
+                   placeholder="Часы" required>
+                :
+                <!-- Поле для ввода минут -->
+                <input type="number" name="cooking_minutes" min="0" max="59"
+                   value="{{ old('cooking_minutes', $minutes) }}"
+                   placeholder="Минуты" required>
+                @error('cooking_hours')
+                    <div>
+                        <p>{{ $message }}</p>
+                    </div>
+                @enderror
+                @error('cooking_minutes')
+                    <div>
+                        <p>{{ $message }}</p>
+                    </div>
+                @enderror
+            </div>
                 <div class="grid">
                     <label>Калорийность:</label>
                     <input type="number" name="calorie" min="0" placeholder="Введите кол-во калорий"
@@ -167,17 +175,20 @@
             <fieldset class="form-input m-b">
                 <label>Шаги:</label>
                 <div id="steps-container-edit">
-                    @if(isset($recipe->data['steps']) && count($recipe->data['steps']) > 0)
-                        @foreach($recipe->data['steps'] as $step)
-                            <div class="step">
-                                <input type="text" name="steps[]" value="{{ $step }}" placeholder="Шаг приготовления">
-                                <button type="button" class="remove-step"><img class="remove-step"
-                                        src="{{asset('images/delete.svg')}}" alt="Удалить"></button>
-                            </div>
-                        @endforeach
-                    @else
-                        <p>Шаги не указаны.</p>
+                @foreach($recipe->steps as $index => $step)
+                <div class="form-group">
+                    <label>Шаг {{ $index + 1 }}</label>
+                    <input type="text" name="steps[{{ $index }}]"  value="{{ $step->description }}" required>
+                    @if($step->photo)
+                        <div>
+                            <img src="{{ asset('storage/' . $step->photo) }}" alt="Фото шага">
+                        </div>
                     @endif
+                    <input type="file" name="step_photos[{{ $index }}]" >
+                </div>
+            @endforeach
+    </ul>
+
                 </div>
                 <div>
                     <button type="button" id="add-step-edit" class="btn-success flex">
