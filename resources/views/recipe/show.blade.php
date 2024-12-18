@@ -81,11 +81,17 @@
 
             <div class="ingredients">
                 <h3>Ингредиенты:</h3>
-                <ul>
-                    @foreach ($recipe->data['ingredients'] as $ingredient)
-                        <li>{{ $ingredient['name'] }} - {{$ingredient['quantity']}} {{$ingredient['unit']}}</li>
-                    @endforeach
-                </ul>
+                @if(isset($recipe->data['ingredients']) && is_array($recipe->data['ingredients']))
+                    <ul>
+                    @foreach($recipe->data['ingredients'] as $ingredient)
+                        @if(is_array($ingredient) && isset($ingredient['name']) && isset($ingredient['quantity']) && isset($ingredient['unit']))
+                            <li>{{ $ingredient['name'] }} - {{$ingredient['quantity']}} {{$ingredient['unit']}}</li>
+                        @elseif(is_string($ingredient))
+                            <li>{{$ingredient}}</li>
+                        @endif
+                     @endforeach
+                    </ul>
+                @endif
             </div>
             <div class="steps">
     <h3>Шаги приготовления:</h3>

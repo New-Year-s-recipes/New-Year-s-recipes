@@ -61,34 +61,32 @@
             </fieldset>
 
             <fieldset class="form-input grid">
-            <div class="grid time">
-                <label>Время готовки:</label>
-                <!-- Поле для ввода часов -->
-                @php
-                   $cookingTime = isset($recipe->data['cooking_time']) && is_string($recipe->data['cooking_time']) ? $recipe->data['cooking_time'] : '0:0';
-                   $timeParts = explode(':', $cookingTime);
-                   $hours = isset($timeParts[0]) ? intval($timeParts[0]) : 0;
-                   $minutes = isset($timeParts[1]) ? intval($timeParts[1]) : 0;
-                @endphp
-                <input type="number" name="cooking_hours" min="0"
-                   value="{{ old('cooking_hours', $hours) }}"
-                   placeholder="Часы" required>
-                :
-                <!-- Поле для ввода минут -->
-                <input type="number" name="cooking_minutes" min="0" max="59"
-                   value="{{ old('cooking_minutes', $minutes) }}"
-                   placeholder="Минуты" required>
-                @error('cooking_hours')
-                    <div>
-                        <p>{{ $message }}</p>
-                    </div>
-                @enderror
-                @error('cooking_minutes')
-                    <div>
-                        <p>{{ $message }}</p>
-                    </div>
-                @enderror
-            </div>
+                <div class="grid time">
+                    <label>Время готовки:</label>
+                    <!-- Поле для ввода часов -->
+                    @php
+                        $cookingTime = isset($recipe->data['cooking_time']) && is_string($recipe->data['cooking_time']) ? $recipe->data['cooking_time'] : '0:0';
+                        $timeParts = explode(':', $cookingTime);
+                        $hours = isset($timeParts[0]) ? intval($timeParts[0]) : 0;
+                        $minutes = isset($timeParts[1]) ? intval($timeParts[1]) : 0;
+                    @endphp
+                    <input type="number" name="cooking_hours" min="0" value="{{ old('cooking_hours', $hours) }}"
+                        placeholder="Часы" required>
+                    :
+                    <!-- Поле для ввода минут -->
+                    <input type="number" name="cooking_minutes" min="0" max="59"
+                        value="{{ old('cooking_minutes', $minutes) }}" placeholder="Минуты" required>
+                    @error('cooking_hours')
+                        <div>
+                            <p>{{ $message }}</p>
+                        </div>
+                    @enderror
+                    @error('cooking_minutes')
+                        <div>
+                            <p>{{ $message }}</p>
+                        </div>
+                    @enderror
+                </div>
                 <div class="grid">
                     <label>Калорийность:</label>
                     <input type="number" name="calorie" min="0" placeholder="Введите кол-во калорий"
@@ -131,32 +129,34 @@
             <fieldset class="form-input m-b">
                 <label>Ингредиенты:</label>
                 <div id="ingredients-container-edit">
-                    @foreach($recipe->data['ingredients'] as $ingredient)
-                        <div class="ingredient">
-                            <input type="text" name="ingredients[]" value="{{ $ingredient['name'] }}"
-                                placeholder="Ингредиент">
-                            <input type="number" name="ingredient_quantity[]" value="{{ $ingredient['quantity'] ?? '' }}"
-                                placeholder="Количество">
-                            <select name="ingredient_unit[]">
-                                <option value="г" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'г') selected
-                                @endif>г</option>
-                                <option value="кг" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'кг') selected
-                                @endif>кг</option>
-                                <option value="мл" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'мл') selected
-                                @endif>мл</option>
-                                <option value="л" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'л') selected
-                                @endif>л</option>
-                                <option value="шт" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'шт') selected
-                                @endif>шт</option>
-                                <option value="чашка" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'чашка')
-                                selected @endif>чашка</option>
-                                <option value="ст. ложка" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'ст. ложка') selected @endif>ст. ложка</option>
-                                <option value="чайная ложка" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'чайная ложка') selected @endif>чайная ложка</option>
-                            </select>
-                            <button type="button" class="remove-ingredient"><img class="remove-ingredient"
-                                    src="{{asset('images/delete.svg')}}" alt="Удалить"></button>
-                        </div>
-                    @endforeach
+                    @if(isset($recipe->data['ingredients']) && is_array($recipe->data['ingredients']))
+                        @foreach($recipe->data['ingredients'] as $ingredient)
+                            <div class="ingredient">
+                                <input type="text" name="ingredients[]" value="{{ $ingredient['name'] ?? '' }}"
+                                    placeholder="Ингредиент">
+                                <input type="number" name="ingredient_quantity[]" value="{{ $ingredient['quantity'] ?? '' }}"
+                                    placeholder="Количество">
+                                <select name="ingredient_unit[]">
+                                    <option value="г" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'г') selected
+                                    @endif>г</option>
+                                    <option value="кг" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'кг') selected
+                                    @endif>кг</option>
+                                    <option value="мл" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'мл') selected
+                                    @endif>мл</option>
+                                    <option value="л" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'л') selected
+                                    @endif>л</option>
+                                    <option value="шт" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'шт') selected
+                                    @endif>шт</option>
+                                    <option value="чашка" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'чашка')
+                                    selected @endif>чашка</option>
+                                    <option value="ст. ложка" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'ст. ложка') selected @endif>ст. ложка</option>
+                                    <option value="чайная ложка" @if(isset($ingredient['unit']) && $ingredient['unit'] == 'чайная ложка') selected @endif>чайная ложка</option>
+                                </select>
+                                <button type="button" class="remove-ingredient"><img class="remove-ingredient"
+                                        src="{{asset('images/delete.svg')}}" alt="Удалить"></button>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
                 <div>
                     <button type="button" id="add-ingredient-edit" class="btn-success flex">
@@ -175,19 +175,19 @@
             <fieldset class="form-input m-b">
                 <label>Шаги:</label>
                 <div id="steps-container-edit">
-                @foreach($recipe->steps as $index => $step)
-                <div class="form-group">
-                    <label>Шаг {{ $index + 1 }}</label>
-                    <input type="text" name="steps[{{ $index }}]"  value="{{ $step->description }}" required>
-                    @if($step->photo)
-                        <div>
-                            <img src="{{ asset('storage/' . $step->photo) }}" alt="Фото шага">
+                    @foreach($recipe->steps as $index => $step)
+                        <div class="form-group">
+                            <label>Шаг {{ $index + 1 }}</label>
+                            <input type="text" name="steps[{{ $index }}]" value="{{ $step->description }}" required>
+                            @if($step->photo)
+                                <div>
+                                    <img src="{{ asset('storage/' . $step->photo) }}" alt="Фото шага">
+                                </div>
+                            @endif
+                            <input type="file" name="step_photos[{{ $index }}]">
                         </div>
-                    @endif
-                    <input type="file" name="step_photos[{{ $index }}]" >
-                </div>
-            @endforeach
-    </ul>
+                    @endforeach
+                    </ul>
 
                 </div>
                 <div>
