@@ -15,7 +15,7 @@
         <form action="{{ route('tips_edit', ['id' => $tip->id]) }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="new-recipes-photo">
-                <img src="{{ asset('storage/' . $tip->image_path) }}" alt="Фото рецепта" style="max-width: 200px;">
+                <img src="{{ asset('/' . $tip->image_path) }}" alt="Фото рецепта" style="max-width: 200px;">
 
                 <label>Загрузить новое фото:</label>
                 <input type="file" name="photo">

@@ -38,7 +38,7 @@
                     <div>
                         @if(Auth::user()->role != 'admin')
                             <a class="profile" href="{{route('profile', ['id' => Auth::user()->id])}}">
-                                <img src="{{ asset('storage/' . Auth::user()->path) }}" alt="Фото профиля">
+                                <img src="{{ asset('/' . Auth::user()->path) }}" alt="Фото профиля">
                                 <p>{{Auth::user()->name}}</p>
                             </a>
                         @endif

@@ -17,7 +17,7 @@
         <div class="tips-grid">
             @foreach($tips as $tip)
                 <div class="tip-card">
-                    <img src="{{ asset('storage/' . $tip->image_path) }}" alt="Совет 1" />
+                    <img src="{{ asset('/' . $tip->image_path) }}" alt="Совет 1" />
                     <h2>{{$tip->title}}</h2>
                     <p>{{ $tip->description }}</p>
                     <a href="{{ route('tips.show', $tip->id) }}" class="details-button">Подробнее</a>

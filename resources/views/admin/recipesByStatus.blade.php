@@ -11,7 +11,7 @@
             @foreach($recipes as $recipe)
                 <li class="col-md-4">
                     <div class="card">
-                        <img src="{{ asset('storage/' . $recipe->path) }}" alt="Uploaded Photo">
+                        <img src="{{ asset('/' . $recipe->path) }}" alt="Uploaded Photo">
                         <div class="card-body">
                             <h5>{{ $recipe->title }}</h5>
                             <p>{{ $recipe->data['description'] ?? 'Описание отсутствует' }}</p>
