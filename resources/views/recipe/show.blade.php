@@ -146,7 +146,7 @@
                 </div>
             @endif
             <div class="author">
-                <img src="{{ asset('storage/' . $recipe->user->path) }}" alt="Автор">
+                <img src="{{ asset('/' . $recipe->user->path) }}" alt="Автор">
                 <div>
                     <h4>{{ $recipe->user->name }}</h4>
                     <p>Автор</p>

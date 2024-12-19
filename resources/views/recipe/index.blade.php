@@ -62,7 +62,7 @@ use Illuminate\Support\Facades\Auth;?>
                 @foreach($popularRecipes as $recipe)
                     <li>
                         <a href="{{route('recipesPage', $recipe->id)}}">
-                            <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
+                            <img src="{{ asset('/' . $recipe->path) }}" alt="dish" class="dish-images">
                             <div class="item__dishes_slider">
                                 <div class="item-info__dishes_slider">
                                     <span>РЕЦЕПТ</span>
@@ -94,7 +94,7 @@ use Illuminate\Support\Facades\Auth;?>
                 @foreach($hots as $recipe)
                     <li>
                         <a href="{{route('recipesPage', $recipe->id)}}">
-                            <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
+                            <img src="{{ asset('/' . $recipe->path) }}" alt="dish" class="dish-images">
                             <div class="item__dishes_slider">
                                 <div class="item-info__dishes_slider">
                                     <span>РЕЦЕПТ</span>
@@ -126,7 +126,7 @@ use Illuminate\Support\Facades\Auth;?>
                 @foreach($deserts as $recipe)
                     <li>
                         <a href="{{route('recipesPage', $recipe->id)}}">
-                            <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
+                            <img src="{{ asset('/' . $recipe->path) }}" alt="dish" class="dish-images">
                             <div class="item__dishes_slider">
                                 <div class="item-info__dishes_slider">
                                     <span>РЕЦЕПТ</span>
@@ -158,7 +158,7 @@ use Illuminate\Support\Facades\Auth;?>
                 @foreach($colds as $recipe)
                     <li>
                         <a href="{{route('recipesPage', $recipe->id)}}">
-                            <img src="{{ asset('storage/' . $recipe->path) }}" alt="dish" class="dish-images">
+                            <img src="{{ asset('/' . $recipe->path) }}" alt="dish" class="dish-images">
                             <div class="item__dishes_slider">
                                 <div class="item-info__dishes_slider">
                                     <span>РЕЦЕПТ</span>
@@ -200,10 +200,10 @@ use Illuminate\Support\Facades\Auth;?>
                             <p>{{$adviceOfTheDay->text}}</p>
                         </div>
                         <div class="image-wrapper__advice">
-                            <img class="advice-img" src=" {{ asset('storage/' . $adviceOfTheDay->image_path) }}"
+                            <img class="advice-img" src=" {{ asset('/' . $adviceOfTheDay->image_path) }}"
                                 alt="advice-image">
                             <div class="author">
-                                <img src="{{  asset('storage/' . $adviceOfTheDay->user->path) }}" alt="author">
+                                <img src="{{  asset('/' . $adviceOfTheDay->user->path) }}" alt="author">
                                 <div class="author__content">
                                     <span class="name">{{$adviceOfTheDay->user->name}}</span>
                                     <span class="author-class">Эксперт</span>

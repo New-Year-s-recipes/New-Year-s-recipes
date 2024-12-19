@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;?>
 <div class="container">
     <div class="user-info m-t">
         <div>
-            <img src="{{ asset('storage/' . Auth::user()->path) }}" alt="Фото профиля">
+            <img src="{{ asset('/' . Auth::user()->path) }}" alt="Фото профиля">
             <h2>{{Auth::user()->name}}</h2>
             <p>{{Auth::user()->email}}</p>
         </div>
