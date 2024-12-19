@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Log;
+use Storage;
 
 class RecipeController extends Controller
 {
@@ -173,8 +175,10 @@ class RecipeController extends Controller
         $recipe = Recipe::findOrFail($id);
 
         // Проверяем и преобразуем ingredients в массив
-        $ingredients = isset($recipe->data['ingredients']) && is_string($recipe->data['ingredients']) ?
-            json_decode($recipe->data['ingredients'], true) : (array) $recipe->data['ingredients'];
+        $ingredients = isset($recipe->data['ingredients']) ? (
+            is_string($recipe->data['ingredients']) ?
+            json_decode($recipe->data['ingredients'], true) : (array) $recipe->data['ingredients']
+        ) : [];
 
         // Проверяем и преобразуем steps в массив
         $steps = isset($recipe->data['steps']) ? (
@@ -182,44 +186,44 @@ class RecipeController extends Controller
             json_decode($recipe->data['steps'], true) : (array) $recipe->data['steps']
         ) : [];
 
-
         $recipe->setAttribute('data', [
             'ingredients' => $ingredients,
             'steps' => $steps,
             'description' => $recipe->data['description'] ?? '',
             'cooking_time' => $recipe->data['cooking_time'] ?? '00:00',
-            'calorie' => $recipe->data['calorie'] ?? 0
+            'calorie' => $recipe->data['calorie'] ?? 0,
         ]);
-
         return view('recipe.edit', compact('recipe'));
     }
 
     public function edit(Request $request, $id)
     {
+        $request->all(); 
+
         $validated = $this->validateData($request, true);
 
-        // Проверка на существование и тип ingredients
+        // Обработка ингредиентов
         if (isset($validated['ingredients']) && is_array($validated['ingredients'])) {
             $ingredientsArray = [];
-
-            //  перебираем массив ингредиентов и формируем правильный массив
             foreach ($validated['ingredients'] as $index => $name) {
-                $ingredientsArray[] = [
-                    'name' => trim($name),
-                    'quantity' => trim($validated['ingredient_quantity'][$index] ?? ''),
-                    'unit' => trim($validated['ingredient_unit'][$index] ?? ''),
-                ];
+                if (trim($name)) {
+                    $ingredientsArray[] = [
+                        'name' => trim($name),
+                        'quantity' => trim($validated['ingredient_quantity'][$index] ?? ''),
+                        'unit' => trim($validated['ingredient_unit'][$index] ?? ''),
+                    ];
+                }
             }
         } else {
             $ingredientsArray = [];
         }
 
+        // Обработка шагов
         if (isset($validated['steps']) && is_array($validated['steps'])) {
             $stepsArray = array_map('trim', $validated['steps']);
         } else {
             $stepsArray = [];
         }
-
 
         $cookingHours = $validated['cooking_hours'];
         $cookingMinutes = $validated['cooking_minutes'];
@@ -233,7 +237,8 @@ class RecipeController extends Controller
                 'steps' => json_encode($stepsArray),
             ];
         } catch (\Exception $e) {
-            dd('Ошибка в формировании $recipeData: ', $e->getMessage());
+            Log::error('Ошибка в формировании $recipeData: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ошибка при обновлении рецепта.');
         }
 
         $recipe = Recipe::findOrFail($id);
@@ -247,24 +252,41 @@ class RecipeController extends Controller
             $path = $request->file('photo')->store('images', 'public');
             $recipe->path = $path;
         }
+
         try {
             $recipe->save();
         } catch (\Exception $e) {
-            dd('Ошибка при сохранении данных: ', $e->getMessage());
-        }
-        $recipe->steps()->delete();
-        foreach ($stepsArray as $step) {
-            try {
-                Step::create([
-                    'recipe_id' => $recipe->id,
-                    'description' => $step,
-                    'photo' => null,
-                ]);
-            } catch (\Exception $e) {
-                dd('Ошибка в создании шага: ', $e->getMessage());
-            }
+            Log::error('Ошибка при сохранении данных: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ошибка при обновлении рецепта.');
         }
 
+        // Сохранение шагов рецепта
+        $recipe->steps()->delete();  // Удаляем старые шаги
+        if (isset($validated['steps']) && is_array($validated['steps'])) {
+            foreach ($validated['steps'] as $index => $step) {
+                $stepPhoto = null;
+                // Проверяем, есть ли загрузка новой фотографии для шага
+                if ($request->hasFile("step_photo." . $index)) {
+                    $stepPhoto = $request->file("step_photo." . $index)->store('images', 'public');
+                } else if (isset($validated['step_photo_delete']) && isset($validated['step_photo_delete'][$index])) {
+                    // Если нужно удалить фото
+                    $stepPhoto = null;
+                } else if (isset($validated['old_step_photo']) && isset($validated['old_step_photo'][$index])) {
+                    // Если фото осталось тем же
+                    $stepPhoto = $validated['old_step_photo'][$index];
+                }
+                try {
+                    Step::create([
+                        'recipe_id' => $recipe->id,
+                        'description' => trim($step),
+                        'photo' => $stepPhoto,
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Ошибка при создании шага: ' . $e->getMessage());
+                    return redirect()->back()->with('error', 'Ошибка при обновлении рецепта.');
+                }
+            }
+        }
         return redirect()->back()->with('success', 'Рецепт успешно обновлён!');
     }
 
@@ -342,42 +364,97 @@ class RecipeController extends Controller
     public function update(Request $request, $id)
     {
         $recipe = Recipe::find($id);
-
-        // Валидация
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'mini_description' => 'required|string',
-            'description' => 'nullable|string',
-            'cooking_hours' => 'required|integer',
-            'cooking_minutes' => 'required|integer',
-            'calorie' => 'required|integer',
-            'complexity' => 'required|string',
-            'category' => 'required|string',
-            'ingredients' => 'required|array',
-            'steps' => 'required|array',
-        ]);
-
-        // Обновление данных
-        $recipe->title = $validated['title'];
-        $recipe->mini_description = $validated['mini_description'];
-        $recipe->setAttribute('data', [ // Используем setAttribute для JSON поля
-            'description' => $validated['description'],
-            'cooking_time' => $validated['cooking_hours'] . ':' . $validated['cooking_minutes'],
-            'calorie' => $validated['calorie'],
-            'ingredients' => $validated['ingredients'],
-            'steps' => $validated['steps'],
-        ]);
-        $recipe->complexity = $validated['complexity'];
-        $recipe->category = $validated['category'];
-
-        // Обработка файла (если он есть)
+    
+        if (!$recipe) {
+            return back()->with('error', 'Рецепт не найден');
+        }
+    
+        // 1. Получаем копию массива $data
+        $data = $recipe->data;
+    
+        // 2. Обновляем поля в копии массива
+        $data['description'] = $request->input('description', $data['description'] ?? '');
+        $data['calorie'] = $request->input('calorie', $data['calorie'] ?? 0);
+        $data['cooking_time'] = $request->input('cooking_hours') . ':' . $request->input('cooking_minutes');
+    
+        // 3. Присваиваем копию обратно полю data
+        $recipe->data = $data;
+        $recipe->save();
+    
+        // Обновление ингредиентов
+        if ($request->has('ingredients')) {
+           $ingredients = $request->input('ingredients', []);
+           $quantities = $request->input('ingredient_quantity', []);
+           $units = $request->input('ingredient_unit', []);
+            $data = is_string($recipe->data) ? json_decode($recipe->data, true) : $recipe->data ?? [];
+            $data['ingredients'] = [];
+            foreach ($ingredients as $index => $ingredient) {
+                $data['ingredients'][] = [
+                   'name' => $ingredient,
+                    'quantity' => $quantities[$index] ?? null,
+                   'unit' => $units[$index] ?? null,
+               ];
+            }
+             $recipe->data = $data;
+           $recipe->save();
+       }
+    
+        // Обновление шага рецепта
+        $steps = $request->input('steps', []);
+        $oldStepIds = collect($recipe->steps)->pluck('id')->all();
+        $i = 0;
+    
+        foreach ($steps as $index => $description) {
+            $step = Step::find($oldStepIds[$i] ?? null);
+            if (!$step) {
+                 $step = new Step();
+             }
+             $step->description = $description;
+    
+            if ($request->hasFile("step_photos.$index")) {
+                // Удаляем старое фото, если оно есть
+                if ($step->photo) {
+                   Storage::disk('public')->delete($step->photo);
+                }
+                // Сохраняем новое фото
+                $photoPath = $request->file("step_photos.$index")->store('steps_photos', 'public');
+                $step->photo = $photoPath;
+             }
+    
+            $recipe->steps()->save($step);
+            $i++;
+         }
+    
+        // Удаление старых шагов, которые больше не используются
+        if (count($recipe->steps) > $i){
+           $deleteSteps = $recipe->steps()->whereNotIn('id', array_slice($oldStepIds, 0, $i))->get();
+            foreach ($deleteSteps as $step){
+                if ($step->photo){
+                   Storage::disk('public')->delete($step->photo);
+                }
+               $step->delete();
+             }
+          }
+    
+        // Если фото рецепта было обновлено, удаляем старое изображение
         if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('recipes');
+            // Удаление старого фото
+            if ($recipe->path && file_exists(storage_path('app/public/' . $recipe->path))) {
+                Storage::disk('public')->delete($recipe->path);
+            }
+    
+            // Сохранение нового фото
+            $path = $request->file('photo')->store('images', 'public');
             $recipe->path = $path;
         }
-
+    
+        // Сохранение изменений рецепта
+        $recipe->title = $request->input('title');
+        $recipe->mini_description = $request->input('mini_description');
+        $recipe->category = $request->input('category');
+        $recipe->complexity = $request->input('complexity');
         $recipe->save();
-
-        return redirect()->route('profile', ['id' => $recipe->id])->with('success', 'Рецепт обновлен!');
+    
+        return back()->with('success', 'Рецепт успешно обновлен!');
     }
 }
