@@ -221,42 +221,29 @@ use Illuminate\Support\Facades\Auth;?>
     <div class="container">
         <h2>СОВЕТЫ ЭКСПЕРТОВ</h2>
         <ul class="expert-advice-slider">
-            <li>
+            @foreach($tips as $tip)
+                <li>
+                    <a href="{{ route('tips.show', $tip->id) }}">
+                        <div class="expert-advice-icon">
+                            <img src="{{ asset('/' . $tip->image_path) }}" alt="{{ $tip->title }}">
+                        </div>
+                        <div class="item__dishes_slider">
+                            <div class="item-info__dishes_slider">
+                                <span>КУХОННАЯ РАЗВЕДКА</span>
+                                <p>{{ $tip->title }}</p>
+                            </div>
 
-                <img src="{{ asset('images/midii.png') }}" alt="Изображение 1">
-                <div class="item__dishes_slider">
-                    <div class="item-info__dishes_slider">
-                        <span>КУХОННАЯ РАЗВЕДКА</span>
-                        <p>Как чистить и готовить мидии</p>
-                    </div>
-                    <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
-                </div>
-            </li>
-            <li>
-                <img src="{{ asset('images/myka.png') }}" alt="Изображение 1">
-                <div class="item__dishes_slider">
-                    <div class="item-info__dishes_slider">
-                        <span>КУХОННАЯ РАЗВЕДКА</span>
-                        <p>Лучшие заменители кукурузного крахмала по мнению профессионалов</p>
-                    </div>
-                    <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
-                </div>
-            </li>
-            <li>
-                <img src="{{ asset('images/syp.png') }}" alt="Изображение 1">
-                <div class="item__dishes_slider">
-                    <div class="item-info__dishes_slider">
-                        <span>КУХОННАЯ РАЗВЕДКА</span>
-                        <p>Вот как сделать еду менее соленой</p>
-                    </div>
-                    <img src="{{ asset('images/christmas.png') }}" alt="Изображение 1">
-                </div>
-            </li>
+                            <img src="{{ asset('images/christmas.png') }}" alt="Декор">
+
+                        </div>
+                    </a>
+                </li>
+            @endforeach
         </ul>
         <div class="expert-advice-btn">
-            <a href="{{route('tips.index')}}"><button type="submit">Посмотреть все</button></a>
+            <a href="{{ route('tips.index') }}"><button type="submit">Посмотреть все</button></a>
         </div>
-        
+    </div>
 </section>
 
 

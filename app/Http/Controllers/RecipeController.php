@@ -68,7 +68,9 @@ class RecipeController extends Controller
             return Tip::with('user')->inRandomOrder()->first();
         });
 
-        return view('recipe.index', compact('popularRecipes', 'hots', 'deserts', 'colds', 'averageRatings', 'request', 'adviceOfTheDay'));
+        $tips = Tip::latest()->take(5)->get(); 
+
+        return view('recipe.index', compact('popularRecipes', 'hots', 'deserts', 'colds', 'averageRatings', 'request', 'adviceOfTheDay', 'tips'));
     }
 
     public function category($category)

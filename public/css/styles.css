@@ -690,6 +690,13 @@ header {
     scrollbar-color: #3B5C41 white;
 }
 
+.expert-advice-icon img{
+    width: 516px;
+    height: 325px;
+    border-radius: 9px;
+
+}
+
 .expert-advice-btn {
     text-align: center;
 }
