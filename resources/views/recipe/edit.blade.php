@@ -250,11 +250,15 @@
             const container = document.getElementById('steps-container-edit');
             const step = document.createElement('div');
             step.classList.add('step');
-            step.innerHTML = '<input type="text" name="steps[]" placeholder="Шаг приготовления">' +
-                '<button type="button" class="remove-step"><img class="remove-step" src="{{asset('images/delete.svg')}}" alt="Удалить"></button>';
+            step.innerHTML = `
+        <input type="text" name="steps[]" placeholder="Шаг приготовления" required>
+        <input type="file" name="step_photos[]" accept="image/*">
+        <button type="button" class="remove-step">
+            <img class="remove-step" src="{{asset('images/delete.svg')}}" alt="Удалить">
+        </button>
+    `;
             container.appendChild(step);
         });
-
 
         // Удаление шагов
         document.addEventListener('click', (e) => {
