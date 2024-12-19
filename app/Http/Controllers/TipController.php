@@ -103,8 +103,22 @@ class TipController extends Controller
     public function show($id)
     {
         $tip = Tip::findOrFail($id);
-        return view('tips.show', compact('tip'));
+        $user = Auth::user(); // Получаем текущего пользователя
+
+        $userRating = null;
+        if ($user) {
+            // Проверяем, оставил ли пользователь оценку
+            $userRating = CouncilEvaluation::where('users_id', $user->id)
+                ->where('tips_id', $id)
+                ->first();
+        }
+
+        return view('tips.show', compact('tip', 'userRating'));
     }
+
+
+
+
     public function council_evaluation_add(Request $request, $id)
     {
         // Получаем текущего авторизованного пользователя
@@ -113,17 +127,29 @@ class TipController extends Controller
         // Проверка на наличие значения в поле "rating"
         $rating = $request->input('rating');
         if (!$rating) {
-            return redirect()->back()->with('error', 'Выбери что нибуть');
+            return redirect()->back()->with('error', 'Выберите оценку');
         }
 
-        // Создаем новую запись в таблице council_evaluation
+        // Проверяем, оставил ли пользователь уже оценку для данного совета
+        $existingRating = CouncilEvaluation::where('users_id', $user->id)
+                                        ->where('tips_id', $id)
+                                        ->first();
+
+        // Если оценка существует, обновляем её
+        if ($existingRating) {
+            $existingRating->rating = $rating;
+            $existingRating->save();
+            return redirect()->route('tips.show', ['id' => $id])->with('success', 'Оценка успешно обновлена');
+        }
+
+        // Если оценки нет, создаем новую
         CouncilEvaluation::create([
             'users_id' => $user->id,  // ID текущего пользователя
             'rating' => $rating,       // Оценка, полученная из формы
             'tips_id' => $id,          // ID совета из URL
         ]);
 
-        // Перенаправляем обратно с сообщением об успешном добавлении
         return redirect()->route('tips.show', ['id' => $id])->with('success', 'Оценка выдана');
     }
+
 }
