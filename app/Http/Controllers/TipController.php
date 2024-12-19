@@ -105,16 +105,21 @@ class TipController extends Controller
         $tip = Tip::findOrFail($id);
         $user = Auth::user(); // Получаем текущего пользователя
 
+        // Проверяем, оставил ли пользователь оценку для данного совета
         $userRating = null;
         if ($user) {
-            // Проверяем, оставил ли пользователь оценку
             $userRating = CouncilEvaluation::where('users_id', $user->id)
                 ->where('tips_id', $id)
                 ->first();
         }
 
-        return view('tips.show', compact('tip', 'userRating'));
+        // Вычисляем среднюю оценку для совета
+        $averageRating = CouncilEvaluation::where('tips_id', $id)->avg('rating');
+        $averageRating = round($averageRating, 1); // Округляем до 1 знака после запятой
+
+        return view('tips.show', compact('tip', 'userRating', 'averageRating'));
     }
+
 
 
 
